@@ -1,26 +1,28 @@
 'use client'
 import { MapContainer, ImageOverlay, useMap } from 'react-leaflet'
+import { LatLngBoundsExpression } from 'leaflet'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { StaticImageData } from 'next/image'
 
 import MarkersRender from '@/components/MarkersRender/MarkersRender'
-import Controls from './Controls/Controls'
+import Controls from '@/components/Controls/Controls'
 
 import 'leaflet/dist/leaflet.css'
 import './mapStyles.css'
 // import './scss/Map.scss'
 
 type MapProps = {
-    customImage: string
+    customImage: StaticImageData
 }
 
-const Map = ({ customImage }: { customImage: MapProps }) => {
+const Map = ({ customImage }: MapProps) => {
     const isAdmin = true
 
     const [mapEdit, setMapEdit] = useState(true)
     const location = usePathname().slice(1)
 
-    const bounds = [
+    const bounds: LatLngBoundsExpression = [
         [0, 0],
         [9, 16],
     ]
@@ -51,7 +53,7 @@ const Map = ({ customImage }: { customImage: MapProps }) => {
 }
 
 // Ограничение перемещения за пределы карты
-function PanRestrict({ bounds }) {
+function PanRestrict({ bounds }: { bounds: LatLngBoundsExpression }) {
     const map = useMap()
     map.setMaxBounds(bounds)
     map.on('drag', () => {
