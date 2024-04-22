@@ -1,14 +1,7 @@
-'use client'
+import customMap from '@/assets/maps/FOKAS2k.png'
+import Map from '@/components/Map/Map'
 
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-
-export default function KrasnoeBedstviePage() {
-    const router = useRouter()
-
-    useEffect(() => {
-        router.push('/krasnoe-bedstvie/map')
-    }, [router])
-
-    return null
+export default function KrasnoeBedstvieMap() {
+    console.log(typeof Map)
+    return <div>{/* <Map customImage={customMap}/> */}</div>
 }

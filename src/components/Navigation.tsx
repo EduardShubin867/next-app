@@ -1,5 +1,15 @@
+'use client'
 import React, { FC } from 'react'
 import Link from 'next/link'
+// import { HiHome } from 'react-icons/hi2'
+import dynamic from 'next/dynamic'
+
+const HiHome = dynamic(
+    () => import('react-icons/hi').then((mod) => mod.HiHome),
+    {
+        ssr: false,
+    }
+)
 
 interface NavItem {
     label: string
@@ -11,15 +21,15 @@ const navItems: NavItem[] = [
     { label: 'Персонажи', href: 'characters' },
 ]
 
-const Navigation: FC = ({}) => {
+const Navigation: FC = () => {
     return (
-        <nav className="bg-gray-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="bg-gray-200 shadow-xl bg-opacity-75 backdrop-blur-sm w-full">
+            <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <Link href="/" className="font-bold text-xl">
-                                My Website
+                                <HiHome />
                             </Link>
                         </div>
                         <div className="hidden md:block">

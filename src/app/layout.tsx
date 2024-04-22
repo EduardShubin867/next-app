@@ -20,7 +20,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={roboto.className}>
-                <div className="container mx-auto">{children}</div>
+                <div className="mx-auto w-full">{children}</div>
             </body>
         </html>
     )

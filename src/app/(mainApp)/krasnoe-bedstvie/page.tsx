@@ -1,7 +1,15 @@
-export default function KrasnoeBedstvieMap() {
-    return (
-        <div>
-            <h1>Krasnoe Bedstvie</h1>
-        </div>
-    )
+'use client'
+import { useRouter } from 'next/navigation'
+import { useEffect, FC } from 'react'
+
+const KrasnoeBedstviePage: FC = () => {
+    const router = useRouter()
+
+    useEffect(() => {
+        router.push('/krasnoe-bedstvie/map')
+    }, [router])
+
+    return null
 }
+
+export default KrasnoeBedstviePage
