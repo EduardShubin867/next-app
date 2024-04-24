@@ -1,12 +1,12 @@
+'use client'
+
 import { useState, useEffect, useRef, SyntheticEvent } from 'react'
-import L from 'leaflet'
-import { useDispatch } from 'react-redux'
+import L, { LatLngExpression } from 'leaflet'
 import uuid from 'react-uuid'
 
 import { TMarker } from '@/types/TMarker'
 
 import NewMarker from './NewMarker/NewMarker'
-import ImagesUpload from '../MarkersRender/MarkerPopupEdit/ImagesUpload/ImagesUpload'
 import MarkerIcon from './MarkerIcon/MarkerIcon'
 import MarkerColorOptions from './MarkerColorOptions/MarkerColorOptions'
 
@@ -22,7 +22,6 @@ type Image = {
 
 const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
     const containerRef = useRef(null)
-    const dispatch = useDispatch()
 
     useEffect(() => {
         if (containerRef.current) {
@@ -31,15 +30,17 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
         }
     }, [])
 
-    const [newPosition, setNewPosition] = useState(null)
+    const [newPosition, setNewPosition] = useState<LatLngExpression>([0, 0])
     const [newMarkerName, setNewMarkerName] = useState('')
     const [newMarkerDescription, setNewMarkerDescription] = useState('')
-    const [newMarkerImage, setNewMarkerImage] = useState([])
-    const [newMarkerIcon, setNewMarkerIcon] = useState('location_on_black_24dp')
+    const [newMarkerImage, setNewMarkerImage] = useState<Array<any>>([])
+    const [newMarkerIcon, setNewMarkerIcon] = useState<string>(
+        'location_on_black_24dp'
+    )
     const [validated, setValidated] = useState(false)
     const [error, setError] = useState('')
     const [imageError, setImageError] = useState(true)
-    const [color, setColor] = useState('black')
+    const [color, setColor] = useState<string>('black')
     const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
     //Add marker handle function
@@ -61,9 +62,7 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
             icon: newMarkerIcon,
             description: newMarkerDescription,
             img: newMarkerImage
-                ? newMarkerImage.map(
-                      (img: Image) => `/assets/images/${img.name}`
-                  )
+                ? newMarkerImage.map((img) => `/assets/images/${img.name}`)
                 : [],
             images: newMarkerImage || [],
             position: newPosition,
@@ -78,7 +77,7 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
             setNewMarkerDescription('')
             setNewMarkerImage([])
             setNewMarkerIcon('location_on_black_24dp')
-            setNewPosition(null)
+            setNewPosition([0, 0])
             setValidated(false)
             setError('')
         } catch (error) {
@@ -203,12 +202,7 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
                                                 <label htmlFor="newMarkerImage">
                                                     Загрузить картинку
                                                 </label>
-                                                <ImagesUpload
-                                                    images={newMarkerImage}
-                                                    setImages={
-                                                        setNewMarkerImage
-                                                    }
-                                                />
+
                                                 {imageError && (
                                                     <div className="alert alert-error mt-2">
                                                         Пожалуйста, загрузите

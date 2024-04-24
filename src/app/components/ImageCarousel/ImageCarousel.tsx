@@ -1,5 +1,7 @@
-import { useKeenSlider } from 'keen-slider/react'
-import 'keen-slider/keen-slider.min.css'
+'use client'
+
+import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { Carousel } from 'react-responsive-carousel'
 import { v4 as uuidv4 } from 'uuid'
 import Image from 'next/image'
 
@@ -8,22 +10,20 @@ interface ImageCarouselProps {
 }
 
 const ImageCarousel = ({ images }: ImageCarouselProps) => {
-    const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-        loop: true,
-    })
-
     return (
-        <div ref={sliderRef} className="keen-slider">
+        <Carousel>
             {images.map((img, index) => (
-                <div className="keen-slider__slide" key={uuidv4()}>
+                <div key={uuidv4()}>
                     <Image
                         src={img}
                         className="w-full h-auto"
+                        width={360}
+                        height={360}
                         alt={`Slide ${index}`}
                     />
                 </div>
             ))}
-        </div>
+        </Carousel>
     )
 }
 

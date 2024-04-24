@@ -1,10 +1,19 @@
 import customMap from '@/assets/maps/FOKAS2k.png'
-import Map from '@/components/Map/Map'
+import { Suspense } from 'react'
+import Loader from '@/app/(mainApp)/krasnoe-bedstvie/loader'
+// import Map from '@/app/components/Map/Map'
+
+import dynamic from 'next/dynamic'
 
 export default function KrasnoeBedstvieMap() {
+    const Map = dynamic(() => import('@/app/components/Map/Map'), {
+        loading: () => <Loader />,
+        ssr: false,
+    })
+
     return (
-        <div>
+        <Suspense fallback="Loading...">
             <Map customImage={customMap} />
-        </div>
+        </Suspense>
     )
 }

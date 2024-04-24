@@ -1,13 +1,10 @@
+'use client'
+
 import { SetStateAction, useState } from 'react'
 import uuid from 'react-uuid'
-import { useDispatch } from 'react-redux'
 import Image from 'next/image'
-import ImagesUpload from './ImagesUpload/ImagesUpload'
-import {
-    updateMarker,
-    deleteMarker,
-} from '../../../../features/marker/markerSlice'
 import { TMarker } from '@/types/TMarker'
+import ImageCarousel from '../ImageCarousel/ImageCarousel'
 
 interface Props {
     marker: TMarker
@@ -25,8 +22,7 @@ const MarkerPopupEdit = ({ marker, location }: Props) => {
     const [editName, setEditName] = useState('')
     const [editDescription, setEditDescription] = useState('')
     const [editImage, setEditImage] = useState<image[] | null>(null)
-
-    const dispatch = useDispatch()
+    console.log(marker.img.length > 1)
 
     const handleEditClick = () => {
         setEditDescription(marker.description)
@@ -45,21 +41,20 @@ const MarkerPopupEdit = ({ marker, location }: Props) => {
     }
 
     const handleSaveClick = () => {
-        dispatch(
-            updateMarker({
-                id: marker.id,
-                name: editName,
-                description: editDescription,
-                img: editImage?.map((img) => `/assets/images/${img.name}`),
-                images: editImage?.filter((imageFile) => imageFile.file),
-                location,
-            })
-        ).unwrap()
-        handleCancelClick()
-    }
-
-    const handleDeleteClick = () => {
-        dispatch(deleteMarker({ id: marker.id, location })).unwrap()
+        //     dispatch(
+        //         updateMarker({
+        //             id: marker.id,
+        //             name: editName,
+        //             description: editDescription,
+        //             img: editImage?.map((img) => `/assets/images/${img.name}`),
+        //             images: editImage?.filter((imageFile) => imageFile.file),
+        //             location,
+        //         })
+        //     ).unwrap()
+        //     handleCancelClick()
+        // }
+        // const handleDeleteClick = () => {
+        //     dispatch(deleteMarker({ id: marker.id, location })).unwrap()
     }
 
     return (
@@ -79,14 +74,16 @@ const MarkerPopupEdit = ({ marker, location }: Props) => {
 
                 <hr className="my-2" />
 
-                {isEditing ? (
-                    <ImagesUpload images={editImage} setImages={setEditImage} />
+                {marker.img.length > 1 ? (
+                    <ImageCarousel images={marker.img} />
                 ) : (
                     marker.img.map((img, index) => (
                         <Image
                             key={uuid()}
                             src={img}
                             className="img-fluid"
+                            width={280}
+                            height={280}
                             alt={`Slide ${index}`}
                         />
                     ))
@@ -133,7 +130,7 @@ const MarkerPopupEdit = ({ marker, location }: Props) => {
                     <button
                         className="btn btn-error m-1"
                         title="Удалить"
-                        onClick={handleDeleteClick}
+                        onClick={() => console.log('deleted')}
                     >
                         Delete
                     </button>

@@ -1,6 +1,6 @@
 'use client'
 import { FC, ReactNode } from 'react'
-import Navigation from '@/components/Navigation'
+import Navigation from '@/app/components/Navigation'
 
 type MainAppLayoutProps = {
     children: ReactNode
