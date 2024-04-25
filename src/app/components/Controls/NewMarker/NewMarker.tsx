@@ -5,6 +5,7 @@ import { LatLngExpression } from 'leaflet';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import Image from 'next/image';
+import { ImageFile } from '@/types/TMarker';
 import ImageCarousel from '../../ImageCarousel/ImageCarousel';
 
 type TImage = {
@@ -17,7 +18,7 @@ interface Props {
   newMarkerIcon: string;
   newMarkerName: string;
   newMarkerDescription: string;
-  newMarkerImg: string[];
+  newMarkerImg: Array<ImageFile>;
   color: string;
 }
 

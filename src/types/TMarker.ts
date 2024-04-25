@@ -1,12 +1,15 @@
 import { LatLngExpression } from 'leaflet';
 
+export interface ImageFile extends File {
+  url: string;
+}
+
 export type TMarker = {
   id: string;
   name: string;
   icon: string;
   description: string;
-  img: Array<string>;
-  images: Array<any>;
+  images: Array<ImageFile>;
   position: LatLngExpression;
   color: string;
   location: string;

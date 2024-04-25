@@ -5,7 +5,7 @@ import L, { LatLngExpression } from 'leaflet';
 import uuid from 'react-uuid';
 import { Label, TextInput, Textarea, FileInput } from 'flowbite-react';
 
-import { TMarker } from '@/types/TMarker';
+import { TMarker, ImageFile } from '@/types/TMarker';
 
 import NewMarker from './NewMarker/NewMarker';
 import MarkerIcon from './MarkerIcon/MarkerIcon';
@@ -16,10 +16,6 @@ type Props = {
   mapEdit: boolean;
   handleSwitchChange: () => void;
   location: string;
-};
-
-type Image = {
-  name: string;
 };
 
 const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
@@ -35,7 +31,7 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
   const [newPosition, setNewPosition] = useState<LatLngExpression>([0, 0]);
   const [newMarkerName, setNewMarkerName] = useState('');
   const [newMarkerDescription, setNewMarkerDescription] = useState('');
-  const [newMarkerImage, setNewMarkerImage] = useState<Array<any>>([]);
+  const [newMarkerImage, setNewMarkerImage] = useState<Array<ImageFile>>([]);
   const [newMarkerIcon, setNewMarkerIcon] = useState<string>('location_on_black_24dp');
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState('');
@@ -61,7 +57,6 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
       name: newMarkerName,
       icon: newMarkerIcon,
       description: newMarkerDescription,
-      img: newMarkerImage ? newMarkerImage.map((img) => `/assets/images/${img.name}`) : [],
       images: newMarkerImage || [],
       position: newPosition,
       color: color,
@@ -166,7 +161,7 @@ const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
                       </div>
 
                       <div>
-                        <ImageDownload />
+                        <ImageDownload setNewMarkerImage={setNewMarkerImage} newMarkerImage={newMarkerImage} />
 
                         {imageError && (
                           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
