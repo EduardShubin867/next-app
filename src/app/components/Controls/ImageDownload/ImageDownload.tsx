@@ -10,7 +10,7 @@ interface Props {
   newMarkerImage: Array<ImageFile>;
 }
 
-const ImageDownload = React.memo(({ setNewMarkerImage, newMarkerImage }: Props) => {
+const ImageDownload = ({ setNewMarkerImage, newMarkerImage }: Props) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       'image/*': [],
@@ -66,8 +66,6 @@ const ImageDownload = React.memo(({ setNewMarkerImage, newMarkerImage }: Props) 
       </div>
     </div>
   );
-});
-ImageDownload.displayName = 'ImageDownload';
-ImageDownload.whyDidYouRender = true;
+};
 
 export default ImageDownload;

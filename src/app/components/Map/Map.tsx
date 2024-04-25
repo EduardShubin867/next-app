@@ -2,7 +2,7 @@
 
 import { MapContainer, ImageOverlay, useMap } from 'react-leaflet';
 import { LatLngBoundsExpression, LatLngExpression, LatLngBounds } from 'leaflet';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { StaticImageData } from 'next/image';
 
@@ -21,11 +21,18 @@ interface PanRestrictProps {
   bounds: LatLngBoundsExpression;
 }
 
+const PureControls = memo(Controls);
+
 const Map = ({ customImage }: MapProps) => {
   const isAdmin = true;
 
   const [mapEdit, setMapEdit] = useState(true);
-  const location = usePathname().slice(1);
+  const pathname = usePathname();
+
+  const trimmedPathname = useMemo(() => {
+    return pathname.slice(1);
+  }, [pathname]);
+
   const bounds: LatLngBoundsExpression = [
     [0, 0],
     [9, 16],
@@ -33,17 +40,19 @@ const Map = ({ customImage }: MapProps) => {
 
   const center: LatLngExpression = [2.5, 7.2];
 
-  const handleSwitchChange = () => {
+  const handleSwitchChange = useCallback(() => {
     setMapEdit(!mapEdit);
-  };
+  }, [mapEdit]);
 
   return (
     <div id="map" className="h-[93.4vh]">
       <MapContainer center={center} zoom={8} maxZoom={12} minZoom={8} scrollWheelZoom={true}>
         <ImageOverlay url={customImage.src} bounds={bounds} />
-        <MarkersRender mapEdit={mapEdit} location={location} />
+        <MarkersRender mapEdit={mapEdit} location={pathname} />
 
-        {isAdmin ? <Controls mapEdit={mapEdit} handleSwitchChange={handleSwitchChange} location={location} /> : null}
+        {isAdmin ? (
+          <PureControls mapEdit={mapEdit} handleSwitchChange={handleSwitchChange} location={trimmedPathname} />
+        ) : null}
         <PanRestrict bounds={bounds} />
       </MapContainer>
     </div>

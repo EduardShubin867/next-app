@@ -4,7 +4,6 @@ import { Suspense, useEffect } from 'react';
 import Loader from '@/app/(mainApp)/krasnoe-bedstvie/loader';
 import { useAppSelector, useAppDispatch, useAppStore } from '@/app/lib/hooks';
 import { fetchMarkers } from '@/app/lib/features/markers/markersSlice';
-import { Alert } from 'flowbite-react';
 
 import dynamic from 'next/dynamic';
 
