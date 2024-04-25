@@ -1,15 +1,15 @@
-'use client'
-import { useRouter } from 'next/navigation'
-import { useEffect, FC } from 'react'
+'use client';
+import { useRouter } from 'next/navigation';
+import { useEffect, FC } from 'react';
 
 const KrasnoeBedstviePage: FC = () => {
-    const router = useRouter()
+  const router = useRouter();
 
-    useEffect(() => {
-        router.push('/krasnoe-bedstvie/map')
-    }, [router])
+  useEffect(() => {
+    router.push('/krasnoe-bedstvie/map');
+  }, [router]);
 
-    return null
-}
+  return null;
+};
 
-export default KrasnoeBedstviePage
+export default KrasnoeBedstviePage;

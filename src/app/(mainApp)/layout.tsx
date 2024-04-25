@@ -1,17 +1,20 @@
-'use client'
-import { FC, ReactNode } from 'react'
-import Navigation from '@/app/components/Navigation'
+'use client';
+import { FC, ReactNode } from 'react';
+import Navigation from '@/app/components/Navigation';
+import StoreProvider from '@/app/StoreProvider';
 
 type MainAppLayoutProps = {
-    children: ReactNode
-}
+  children: ReactNode;
+};
 
 const MainAppLayout: FC<MainAppLayoutProps> = ({ children }) => {
-    return (
-        <>
-            <Navigation />
-            {children}
-        </>
-    )
-}
-export default MainAppLayout
+  return (
+    <>
+      <StoreProvider>
+        <Navigation />
+        {children}
+      </StoreProvider>
+    </>
+  );
+};
+export default MainAppLayout;
