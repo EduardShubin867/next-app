@@ -25,7 +25,7 @@ const NewMarker = () => {
     });
 
     const markerIcon = L.divIcon({
-        html: `<i class="fa-solid fa-location-dot fa-2x" style="color:#0000ff"></i>`,
+        html: `<i class="${newMarkerIcon} fa-2x" style="color:${newMarkerColor}"></i>`,
         popupAnchor: [4, 1],
         className: 'marker-icon',
     });

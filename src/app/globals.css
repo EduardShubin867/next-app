@@ -21,3 +21,15 @@
     width: 100%;
     height: 100%;
 }
+
+@layer components {
+    .marker-icon-selected {
+        @apply drop-shadow-xl;
+        transform: scale(1.2);
+        transition: ease transform 0.2s;
+    }
+    .marker-icon-hover {
+        transform: scale(1.2);
+        transition: ease transform 0.2s;
+    }
+}

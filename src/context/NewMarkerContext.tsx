@@ -31,7 +31,7 @@ const initialValue: ContextValue = {
     setNewMarkerDescription: () => {},
     newMarkerImage: [],
     setNewMarkerImage: () => {},
-    newMarkerIcon: 'location_on_black_24dp',
+    newMarkerIcon: 'fa-solid fa-location-dot',
     setNewMarkerIcon: () => {},
     newMarkerColor: 'black',
     setNewMarkerColor: () => {},
@@ -46,26 +46,23 @@ export const NewMarkerProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [newMarkerName, setNewMarkerName] = useState('');
     const [newMarkerDescription, setNewMarkerDescription] = useState('');
     const [newMarkerImage, setNewMarkerImage] = useState<ImageFile[]>([]);
-    const [newMarkerIcon, setNewMarkerIcon] = useState<string>('location_on_black_24dp');
+    const [newMarkerIcon, setNewMarkerIcon] = useState<string>('fa-solid fa-location-dot');
     const [newMarkerColor, setNewMarkerColor] = useState<string>('black');
+    const location = 'krasnoe-bedstvie';
 
     const handleAddMarker = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
-        if (!newPosition) {
-            return;
-        }
-
-        // const newMarker: TMarker = {
-        //     id: uuid(),
-        //     name: newMarkerName,
-        //     icon: newMarkerIcon,
-        //     description: newMarkerDescription,
-        //     images: newMarkerImage || [],
-        //     position: newPosition,
-        //     color: newMarkerColor,
-        //     location: location,
-        // }
+        const newMarker: TMarker = {
+            id: uuid(),
+            name: newMarkerName,
+            icon: newMarkerIcon,
+            description: newMarkerDescription,
+            images: newMarkerImage || [],
+            position: newPosition,
+            color: newMarkerColor,
+            location: location,
+        };
 
         try {
             setNewMarkerName('');

@@ -1,29 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import uuid from 'react-uuid';
+import { useDebounce } from '@/hooks/useDebounce';
 
 import { NewMarkerContext } from '@/context/NewMarkerContext';
 
 const MarkerColorOptions = () => {
-    const colorOptions = ['black', 'blue', 'yellow', 'skyblue'];
-    const { newMarkerColor, setNewMarkerColor } = useContext(NewMarkerContext);
+    const { setNewMarkerColor } = useContext(NewMarkerContext);
+    const [color, setColor] = useState<string>('#000000');
+    const debouncedColor = useDebounce<string>(color, 500);
 
-    const handleSelectedStyle = (newColor: string) => {
-        return newColor === newMarkerColor ? 'ring-2 ring-offset-2 ring-blue-500' : '';
-    };
+    useEffect(() => {
+        setNewMarkerColor(debouncedColor);
+    }, [debouncedColor, setNewMarkerColor]);
 
     return (
         <div className="flex flex-wrap justify-center">
-            {colorOptions.map((optionColor) => {
-                const bgColor = `bg-${optionColor}-500`;
-                return (
-                    <div
-                        key={uuid()}
-                        className={`m-2 size-12 rounded-full ${bgColor} cursor-pointer ${handleSelectedStyle(optionColor)}`}
-                        style={{ backgroundColor: optionColor }}
-                        onClick={() => setNewMarkerColor(optionColor)}
-                    />
-                );
-            })}
+            <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
         </div>
     );
 };

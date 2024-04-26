@@ -1,40 +1,53 @@
-import { Dispatch, SetStateAction, useContext } from 'react'
-import uuid from 'react-uuid'
-import Image from 'next/image'
+import { useContext } from 'react';
+import uuid from 'react-uuid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBuilding, faHouseChimney, faLocationDot, faMapPin, faTree } from '@fortawesome/free-solid-svg-icons';
 
-import { NewMarkerContext } from '@/context/NewMarkerContext'
+import { NewMarkerContext } from '@/context/NewMarkerContext';
 
 const MarkerIcon = () => {
     const iconOptions = [
-        'location_on_black_24dp',
-        'map-pin',
-        'house',
-        'location_city_black_24dp',
-    ]
+        { icon: faLocationDot, name: 'fa-solid fa-location-dot' },
+        {
+            icon: faMapPin,
+            name: 'fa-solid fa-map-pin',
+        },
+        {
+            icon: faHouseChimney,
+            name: 'fa-solid fa-house-chimney',
+        },
+        {
+            icon: faBuilding,
+            name: 'fa-solid fa-building',
+        },
+        {
+            icon: faTree,
+            name: 'fa-solid fa-tree',
+        },
+    ];
 
-    const { newMarkerIcon, setNewMarkerIcon, newMarkerColor } =
-        useContext(NewMarkerContext)
+    const { newMarkerIcon, setNewMarkerIcon, newMarkerColor } = useContext(NewMarkerContext);
 
     const handleSelectedStyle = (icon: string) => {
         if (newMarkerIcon === icon) {
-            return 'marker-icon-selected'
+            return 'marker-icon-selected';
         }
-        return ''
-    }
+        return '';
+    };
 
-    return iconOptions.map((icon) => {
+    return iconOptions.map((item) => {
         return (
-            <Image
-                key={uuid()}
-                src={`/assets/images/icons/${icon}.svg`}
-                alt={`${icon}`}
-                width={24}
-                height={24}
-                className={`img-fluid marker-icon-options marker-color--${newMarkerColor} ${handleSelectedStyle(icon)}`}
-                onClick={() => setNewMarkerIcon(icon)}
-            />
-        )
-    })
-}
+            <div key={uuid()} className={` m-1 p-1`}>
+                <FontAwesomeIcon
+                    icon={item.icon}
+                    color={newMarkerColor}
+                    className={`cursor-pointer ${handleSelectedStyle(item.name)} hover:marker-icon-hover`}
+                    size="4x"
+                    onClick={() => setNewMarkerIcon(item.name)}
+                />
+            </div>
+        );
+    });
+};
 
-export default MarkerIcon
+export default MarkerIcon;
