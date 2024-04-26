@@ -5,10 +5,19 @@
 @tailwind utilities;
 
 #map {
-  width: 100%;
+    width: 100%;
 }
 
 .leaflet-container {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+.marker-icon {
+    text-align: center;
+    /* Horizontally center the text (icon) */
+    line-height: 20px;
+    /* Vertically center the text (icon) */
+    width: 100%;
+    height: 100%;
 }

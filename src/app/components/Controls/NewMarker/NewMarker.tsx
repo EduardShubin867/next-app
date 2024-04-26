@@ -1,70 +1,58 @@
 'use client';
 
-import React, { useRef, Dispatch, SetStateAction } from 'react';
-import { LatLngExpression } from 'leaflet';
+import React, { useContext } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
-import Image from 'next/image';
-import { ImageFile } from '@/types/TMarker';
+
 import ImageCarousel from '../../ImageCarousel/ImageCarousel';
+import { NewMarkerContext } from '@/context/NewMarkerContext';
 
-type TImage = {
-  name: string;
-};
+const NewMarker = () => {
+    const {
+        newPosition,
+        setNewPosition,
+        newMarkerIcon,
+        newMarkerColor,
+        newMarkerName,
+        newMarkerImage,
+        newMarkerDescription,
+    } = useContext(NewMarkerContext);
+    useMapEvents({
+        click(e) {
+            const { lat, lng } = e.latlng;
+            setNewPosition([lat, lng]);
+        },
+    });
 
-interface Props {
-  newPosition: LatLngExpression;
-  setNewPosition: Dispatch<SetStateAction<LatLngExpression>>;
-  newMarkerIcon: string;
-  newMarkerName: string;
-  newMarkerDescription: string;
-  newMarkerImg: Array<ImageFile>;
-  color: string;
-}
+    const markerIcon = L.divIcon({
+        html: `<i class="fa-solid fa-location-dot fa-2x" style="color:#0000ff"></i>`,
+        popupAnchor: [4, 1],
+        className: 'marker-icon',
+    });
 
-const NewMarker = ({
-  newPosition,
-  setNewPosition,
-  newMarkerIcon,
-  newMarkerName,
-  newMarkerDescription,
-  newMarkerImg,
-  color,
-}: Props) => {
-  useMapEvents({
-    click(e) {
-      const { lat, lng } = e.latlng;
-      setNewPosition([lat, lng]);
-    },
-  });
+    return newPosition ? (
+        <Marker position={newPosition} icon={markerIcon}>
+            <Popup className="marker-popup">
+                <div className="new-marker-popup block justify-center p-0">
+                    <h3 className={`m-2 text-center ${newMarkerName ? '' : 'text-gray-500'}`}>
+                        {newMarkerName || 'Название'}
+                    </h3>
 
-  const markerIcon = L.icon({
-    iconUrl: `/assets/images/icons/${newMarkerIcon}.svg`,
-    iconSize: [32, 32],
-    className: `marker-color--${color}`,
-  });
+                    <hr className="my-2" />
 
-  return newPosition ? (
-    <Marker position={newPosition} icon={markerIcon}>
-      <Popup className="marker-popup">
-        <div className="new-marker-popup block justify-center p-0">
-          <h3 className={`m-2 text-center ${newMarkerName ? '' : 'text-gray-500'}`}>{newMarkerName || 'Название'}</h3>
+                    {newMarkerImage && newMarkerImage.length > 0 ? (
+                        <ImageCarousel images={newMarkerImage} />
+                    ) : (
+                        <div className="h-[301px] bg-gray-300" /> // Placeholder box if no image
+                    )}
 
-          <hr className="my-2" />
-
-          {newMarkerImg && newMarkerImg.length > 0 ? (
-            <ImageCarousel images={newMarkerImg} />
-          ) : (
-            <div className="h-24 bg-gray-300" /> // Placeholder box if no image
-          )}
-
-          <div className="mb-2 mt-2 pl-1 pr-1 text-sm">
-            {newMarkerDescription || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'}
-          </div>
-        </div>
-      </Popup>
-    </Marker>
-  ) : null;
+                    <div className="my-2 px-1 text-sm">
+                        {newMarkerDescription || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'}
+                    </div>
+                </div>
+            </Popup>
+        </Marker>
+    ) : null;
 };
 
 export default NewMarker;
