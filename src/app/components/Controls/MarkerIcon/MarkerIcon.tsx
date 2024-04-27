@@ -3,7 +3,7 @@ import uuid from 'react-uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faHouseChimney, faLocationDot, faMapPin, faTree } from '@fortawesome/free-solid-svg-icons';
 
-import { NewMarkerContext } from '@/context/NewMarkerContext';
+import { MarkersContext } from '@/context/MarkersContext';
 
 const MarkerIcon = () => {
     const iconOptions = [
@@ -26,7 +26,7 @@ const MarkerIcon = () => {
         },
     ];
 
-    const { newMarkerIcon, setNewMarkerIcon, newMarkerColor } = useContext(NewMarkerContext);
+    const { newMarkerIcon, setNewMarkerIcon, newMarkerColor } = useContext(MarkersContext);
 
     const handleSelectedStyle = (icon: string) => {
         if (newMarkerIcon === icon) {

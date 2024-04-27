@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import uuid from 'react-uuid';
 import { useDebounce } from '@/hooks/useDebounce';
 
-import { NewMarkerContext } from '@/context/NewMarkerContext';
+import { MarkersContext } from '@/context/MarkersContext';
 
 const MarkerColorOptions = () => {
-    const { setNewMarkerColor } = useContext(NewMarkerContext);
+    const { setNewMarkerColor } = useContext(MarkersContext);
     const [color, setColor] = useState<string>('#000000');
     const debouncedColor = useDebounce<string>(color, 500);
 

@@ -1,16 +1,16 @@
-'use client'
-import { FC, ReactNode } from 'react'
-import { NewMarkerProvider } from '@/context/NewMarkerContext'
+'use client';
+import { FC, ReactNode } from 'react';
+import { MarkersProvider } from '@/context/MarkersContext';
 
 type Props = {
-    children: ReactNode
-}
+    children: ReactNode;
+};
 
 const MainAppLayout: FC<Props> = ({ children }) => {
     return (
         <>
-            <NewMarkerProvider>{children}</NewMarkerProvider>
+            <MarkersProvider>{children}</MarkersProvider>
         </>
-    )
-}
-export default MainAppLayout
+    );
+};
+export default MainAppLayout;

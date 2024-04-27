@@ -6,18 +6,19 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { v4 as uuid } from 'uuid';
+import { ImageFile } from '@/types/TMarker';
 
-import { NewMarkerContext } from '@/context/NewMarkerContext';
+import { MarkersContext } from '@/context/MarkersContext';
 
 const ImageDownload = () => {
-    const { setNewMarkerImage, newMarkerImage, handleRemoveImage } = useContext(NewMarkerContext);
+    const { setNewMarkerImage, newMarkerImage, handleRemoveImage } = useContext(MarkersContext);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             'image/*': [],
         },
         onDrop: (acceptedFiles) => {
             setNewMarkerImage((prevState) => {
-                const newFiles = acceptedFiles.map((file) =>
+                const newFiles: ImageFile[] = acceptedFiles.map((file) =>
                     Object.assign(file, {
                         url: URL.createObjectURL(file),
                         id: uuid(),

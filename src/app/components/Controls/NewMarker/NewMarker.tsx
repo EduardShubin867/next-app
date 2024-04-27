@@ -5,7 +5,7 @@ import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 
 import ImageCarousel from '../../ImageCarousel/ImageCarousel';
-import { NewMarkerContext } from '@/context/NewMarkerContext';
+import { MarkersContext } from '@/context/MarkersContext';
 
 const NewMarker = () => {
     const {
@@ -16,7 +16,7 @@ const NewMarker = () => {
         newMarkerName,
         newMarkerImage,
         newMarkerDescription,
-    } = useContext(NewMarkerContext);
+    } = useContext(MarkersContext);
     useMapEvents({
         click(e) {
             const { lat, lng } = e.latlng;

@@ -8,11 +8,11 @@ import ImageDownload from '@/app/components/Controls/ImageDownload/ImageDownload
 
 import { TMarker } from '@/types/TMarker';
 
-import { NewMarkerContext } from '@/context/NewMarkerContext';
+import { MarkersContext } from '@/context/MarkersContext';
 
 const ControlsForm = () => {
     const { newMarkerName, setNewMarkerName, newMarkerDescription, setNewMarkerDescription, handleAddMarker } =
-        useContext(NewMarkerContext);
+        useContext(MarkersContext);
 
     return (
         <form noValidate onSubmit={handleAddMarker} className="mx-auto max-w-sm">

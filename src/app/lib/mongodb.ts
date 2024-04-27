@@ -1,41 +1,23 @@
-import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
+import * as mongoDB from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
+const DB_NAME = 'interactive-map';
 
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable');
-}
-let cached = global.mongoose;
+let cachedDb: null | mongoDB.Db = null;
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
+export async function mongodb() {
+    if (cachedDb) {
+        return cachedDb;
+    }
 
-async function dbConnect() {
-  if (cached.conn) {
-    return cached.conn;
-  }
+    const client: mongoDB.MongoClient = await MongoClient.connect(MONGODB_URI);
 
-  if (!cached.promise) {
-    const opts = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      bufferCommands: false,
-    };
+    const db: mongoDB.Db = await client.db(DB_NAME);
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
-  }
+    cachedDb = db;
 
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
-
-  return cached.conn;
+    return db;
 }
 
-export default dbConnect;
+export default mongodb;

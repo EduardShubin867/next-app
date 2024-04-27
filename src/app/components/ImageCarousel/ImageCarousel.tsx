@@ -6,20 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
 import { ImageFile } from '@/types/TMarker';
 
+type ImageArray = Array<ImageFile>;
 interface ImageCarouselProps {
-  images: Array<ImageFile>;
+    images: ImageArray | Array<string>;
 }
 
 const ImageCarousel = ({ images }: ImageCarouselProps) => {
-  return (
-    <Carousel showThumbs={false}>
-      {images.map((img) => (
-        <div key={uuidv4()}>
-          <Image src={img.url} className="h-auto w-full" width={360} height={360} alt={`Slide ${img.name}`} />
-        </div>
-      ))}
-    </Carousel>
-  );
+    return (
+        <Carousel showThumbs={false}>
+            {images.map((img) => (
+                <div key={uuidv4()}>
+                    <Image src={img.url} className="h-auto w-full" width={360} height={360} alt={`Slide ${img.name}`} />
+                </div>
+            ))}
+        </Carousel>
+    );
 };
 
 export default ImageCarousel;

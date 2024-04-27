@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { TMarker } from '@/types/TMarker';
-import { getMarkers } from '@/app/lib/actions';
+import { getMarkers, addMarker } from '@/app/lib/actions';
 
 const URL = 'http://localhost:3001';
 
@@ -22,34 +22,25 @@ export const fetchMarkers = createAsyncThunk('markers/fetchMarkers', async () =>
 });
 
 export const addNewMarker = createAsyncThunk('markers/addNewMarker', async (newMarker: TMarker) => {
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    newMarker.images.forEach((img, index) => {
-        formData.append(`image[${index}]`, img.file, img.file.name);
-    });
+    // newMarker.images.forEach((img, index) => {
+    //     formData.append(`image[${index}]`, img, img.name);
+    // });
 
-    // Add data to FormData
-    formData.append('id', newMarker.id);
-    formData.append('name', newMarker.name);
-    formData.append('icon', newMarker.icon);
-    formData.append('description', newMarker.description);
-    formData.append('img', JSON.stringify(newMarker.img));
-    formData.append('position', JSON.stringify(newMarker.position));
-    formData.append('color', newMarker.color);
-    formData.append('location', newMarker.location);
+    // // Add data to FormData
+    // formData.append('id', newMarker.id);
+    // formData.append('name', newMarker.name);
+    // formData.append('icon', newMarker.icon);
+    // formData.append('description', newMarker.description);
+    // formData.append('position', JSON.stringify(newMarker.position));
+    // formData.append('color', newMarker.color);
+    // formData.append('location', newMarker.location);
 
     try {
-        const response = await fetch(`${URL}/markers`, {
-            method: 'POST',
-            body: formData,
-        });
+        const response = await addMarker(newMarker);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error Status: ${response.status}`);
-        }
-
-        const responseData = await response.json();
-        return responseData;
+        return response;
     } catch (error) {
         console.error('Error processing request:', error);
         throw error;
@@ -60,14 +51,13 @@ export const updateMarker = createAsyncThunk('markers/updateMarker', async (mark
     const formData = new FormData();
 
     marker.images.forEach((img, index) => {
-        formData.append(`image[${index}]`, img.file, img.file.name);
+        formData.append(`image[${index}]`, img, img.name);
     });
 
     // Add data to FormData
     formData.append('id', marker.id);
     formData.append('name', marker.name);
     formData.append('description', marker.description);
-    formData.append('img', JSON.stringify(marker.img));
     formData.append('location', marker.location);
 
     try {
@@ -133,7 +123,7 @@ export const markersSlice = createSlice({
                 if (existingMarker) {
                     existingMarker.name = name;
                     existingMarker.description = description;
-                    existingMarker.img = img;
+                    existingMarker.images = img;
                 }
             })
             // Delete marker

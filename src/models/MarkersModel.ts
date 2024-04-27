@@ -1,15 +1,15 @@
 import mongoose, { Schema, model, models } from 'mongoose';
 
 const MarkersSchema = new Schema({
-  _id: { type: String, required: true },
-  name: { type: String, required: true },
-  icon: { type: String, required: true },
-  description: { type: String, required: true },
-  position: { type: Array, required: true },
-  img: { type: Array, required: true },
-  color: { type: String, required: true },
+    id: String,
+    name: String,
+    icon: String,
+    description: String,
+    position: Array,
+    images: Array,
+    color: String,
 });
 
-const MarkersModel = models.SomeModel || model('MarkersModel', MarkersSchema);
+const MarkersModel = mongoose.model('krasnoe-bedstvie', MarkersSchema);
 
 export default MarkersModel;

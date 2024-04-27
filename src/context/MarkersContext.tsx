@@ -1,11 +1,16 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { LatLngExpression } from 'leaflet';
 import { ImageFile } from '@/types/TMarker';
 import { v4 as uuid } from 'uuid';
 
+import { addMarker, getMarkers } from '@/app/lib/actions';
+
 import { TMarker } from '@/types/TMarker';
+import { nanoid } from 'nanoid';
 
 interface ContextValue {
+    markers: Array<TMarker>;
+    setMarkers: React.Dispatch<React.SetStateAction<Array<TMarker>>>;
     newPosition: LatLngExpression;
     setNewPosition: React.Dispatch<React.SetStateAction<LatLngExpression>>;
     newMarkerName: string;
@@ -23,6 +28,8 @@ interface ContextValue {
 }
 
 const initialValue: ContextValue = {
+    markers: [],
+    setMarkers: () => {},
     newPosition: [0, 0],
     setNewPosition: () => {},
     newMarkerName: '',
@@ -39,16 +46,26 @@ const initialValue: ContextValue = {
     handleRemoveImage: () => {},
 };
 
-export const NewMarkerContext = createContext<ContextValue>(initialValue);
+export const MarkersContext = createContext<ContextValue>(initialValue);
 
-export const NewMarkerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [markers, setMarkers] = useState<Array<TMarker>>([]);
     const [newPosition, setNewPosition] = useState<LatLngExpression>([0, 0]);
     const [newMarkerName, setNewMarkerName] = useState('');
     const [newMarkerDescription, setNewMarkerDescription] = useState('');
     const [newMarkerImage, setNewMarkerImage] = useState<ImageFile[]>([]);
     const [newMarkerIcon, setNewMarkerIcon] = useState<string>('fa-solid fa-location-dot');
     const [newMarkerColor, setNewMarkerColor] = useState<string>('black');
+
     const location = 'krasnoe-bedstvie';
+
+    useEffect(() => {
+        const fetchMarkers = async () => {
+            setMarkers(await getMarkers());
+        };
+
+        fetchMarkers();
+    }, []);
 
     const handleAddMarker = async (event: React.SyntheticEvent) => {
         event.preventDefault();
@@ -64,14 +81,31 @@ export const NewMarkerProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             location: location,
         };
 
+        const markerData = new FormData();
+        const markerFiles = new FormData();
+
+        markerData.append('id', newMarker.id);
+        markerData.append('name', newMarker.name);
+        markerData.append('icon', newMarker.icon);
+        markerData.append('description', newMarker.description);
+        markerData.append('position', JSON.stringify(newMarker.position));
+        markerData.append('color', newMarker.color);
+        markerData.append('location', newMarker.location);
+
+        newMarker.images.forEach((img, index) => {
+            markerFiles.append(`images[]`, img);
+        });
+
         try {
+            const response = JSON.parse(await addMarker(markerData, markerFiles));
+            setMarkers((prev) => [...prev, response]);
             setNewMarkerName('');
             setNewMarkerDescription('');
             setNewMarkerImage([]);
-            setNewMarkerIcon('location_on_black_24dp');
+            setNewMarkerIcon('fa-solid fa-location-dot');
             setNewPosition([0, 0]);
         } catch (error) {
-            console.error('Failed to save marker: ', error);
+            console.log('Error on adding marker');
         }
     };
 
@@ -80,6 +114,8 @@ export const NewMarkerProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     };
 
     const value: ContextValue = {
+        markers,
+        setMarkers,
         newPosition,
         setNewPosition,
         newMarkerName,
@@ -96,5 +132,5 @@ export const NewMarkerProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         handleRemoveImage,
     };
 
-    return <NewMarkerContext.Provider value={value}>{children}</NewMarkerContext.Provider>;
+    return <MarkersContext.Provider value={value}>{children}</MarkersContext.Provider>;
 };
