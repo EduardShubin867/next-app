@@ -15,7 +15,6 @@ type Props = {
 
 const Controls = ({ mapEdit, handleSwitchChange, location }: Props) => {
     const containerRef = useRef(null);
-    console.log('Rerender');
 
     useEffect(() => {
         if (containerRef.current) {

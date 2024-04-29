@@ -61,7 +61,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     useEffect(() => {
         const fetchMarkers = async () => {
-            setMarkers(await getMarkers());
+            setMarkers(JSON.parse(await getMarkers()));
         };
 
         fetchMarkers();

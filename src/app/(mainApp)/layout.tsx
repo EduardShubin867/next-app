@@ -4,17 +4,17 @@ import Navigation from '@/app/components/Navigation';
 import StoreProvider from '@/app/StoreProvider';
 
 type MainAppLayoutProps = {
-  children: ReactNode;
+    children: ReactNode;
 };
 
 const MainAppLayout: FC<MainAppLayoutProps> = ({ children }) => {
-  return (
-    <>
-      <StoreProvider>
-        <Navigation />
-        {children}
-      </StoreProvider>
-    </>
-  );
+    return (
+        <>
+            <StoreProvider>
+                <Navigation />
+                {children}
+            </StoreProvider>
+        </>
+    );
 };
 export default MainAppLayout;

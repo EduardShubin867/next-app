@@ -61,6 +61,8 @@ const ImageDownload = () => {
         return Math.min(remainingSpaceOnRow, 3);
     }, [newMarkerImage.length]);
 
+    console.log(uploadColSpan);
+
     return (
         <div
             className={clsx(
@@ -71,7 +73,7 @@ const ImageDownload = () => {
             {thumbs}
             <div
                 {...getRootProps()}
-                className={clsx(`w-full col-span-${uploadColSpan}`, newMarkerImage.length >= 6 ? 'hidden' : 'block')}
+                className={clsx(`col-span-${uploadColSpan} w-full`, newMarkerImage.length >= 6 ? 'hidden' : 'block')}
             >
                 <input {...getInputProps()} />
                 <div

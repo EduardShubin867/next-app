@@ -1,24 +1,27 @@
 'use server';
-import { TMarker } from '@/types/TMarker';
+import { ImageFile, TMarker } from '@/types/TMarker';
 import mongodb from '@/app/lib/mongodb';
 import { writeFile } from 'fs/promises';
 import { nanoid } from 'nanoid';
+import { LatLngExpression } from 'leaflet';
 
 export async function getMarkers() {
-    const markers: TMarker[] = [
-        {
-            id: '66235586ba57c6d72560d855',
-            name: 'dawd',
-            icon: 'location_on_black_24dp',
-            description: 'Some Description',
-            position: [2.5, 7.2],
-            images: [],
-            color: 'black',
-            location: 'Some Location',
-        },
-    ];
+    const db = await mongodb();
 
-    return markers;
+    const markers = await db.collection('krasnoe-bedstvie').find({}).toArray();
+
+    return JSON.stringify(markers);
+}
+
+interface Marker {
+    id: string;
+    name: string;
+    icon: string;
+    description: string;
+    images: Array<ImageFile> | string[];
+    position: string[] | string;
+    color: string;
+    location: string;
 }
 
 export async function addMarker(newMarker: FormData, newMarkerFiles: FormData) {
@@ -35,15 +38,15 @@ export async function addMarker(newMarker: FormData, newMarkerFiles: FormData) {
         try {
             const buffer = new Uint8Array(await file.arrayBuffer());
             await writeFile(filePath, buffer);
-            images.push(`${fileName}.${fileExt}`);
+            images.push(`/assets/images/map/${fileName}.${fileExt}`);
         } catch (error) {
             console.log({ success: false, message: `Ошибка при загрузке файла ${file.name}: ${error}` });
         }
     }
 
-    const newMarkerObj = { ...Object.fromEntries(newMarker), images };
+    const newMarkerObj: Marker = { ...Object.fromEntries(newMarker), images } as Marker;
 
-    console.log(newMarkerObj);
+    newMarkerObj.position = JSON.parse(newMarkerObj.position as string);
 
     const res = await db.collection('krasnoe-bedstvie').insertOne(newMarkerObj);
 

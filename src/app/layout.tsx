@@ -6,6 +6,8 @@ import Script from 'next/script';
 const roboto = Roboto({
     weight: ['400', '700'],
     subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-roboto',
 });
 
 export const metadata: Metadata = {
@@ -19,7 +21,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={roboto.className}>
             <head>
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
 
@@ -30,7 +32,7 @@ export default function RootLayout({
 
                 <Script src="https://kit.fontawesome.com/ebe06fd839.js"></Script>
             </head>
-            <body className={roboto.className}>
+            <body>
                 <div className="mx-auto w-full">{children}</div>
             </body>
         </html>

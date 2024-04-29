@@ -21,16 +21,16 @@ const MarkersRender = ({ mapEdit, location }: MarkersRenderProp) => {
     const { markers } = useContext(MarkersContext);
 
     const markerIcon = (icon: string, color: string) => {
-        return L.icon({
-            iconUrl: `/assets/images/icons/${icon}.svg`,
-            iconSize: [32, 32],
-            className: `marker-color--${color}`,
+        return L.divIcon({
+            html: `<i class="${icon} fa-2x" style="color:${color}"></i>`,
+            popupAnchor: [4, 1],
+            className: 'marker-icon',
         });
     };
 
     return markers?.map((marker: TMarker) => (
         <Marker key={uuid()} position={marker.position} icon={markerIcon(marker.icon, marker.color)}>
-            <Popup minWidth={310} maxWidth={310} maxHeight={400}>
+            <Popup minWidth={310} maxWidth={310} maxHeight={600} interactive={true} className="!cursor-default">
                 {mapEdit ? <MarkerPopupEdit marker={marker} location={location} /> : <MarkerPopup marker={marker} />}
             </Popup>
         </Marker>
