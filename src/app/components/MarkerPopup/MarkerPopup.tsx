@@ -12,6 +12,9 @@ import { MdOutlineCancelPresentation } from 'react-icons/md';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
 import CustomButton from '@/app/components/CustomButton/CustomButton';
 import { MarkersContext } from '@/context/MarkersContext';
+import ImageDownload from '@/app/components/Controls/ImageDownload/ImageDownload';
+
+import { ImageFile } from '@/types/TMarker';
 
 interface Props {
     marker: TMarker;
@@ -29,24 +32,29 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editName, setEditName] = useState('');
     const [editDescription, setEditDescription] = useState('');
-    const [editImage, setEditImage] = useState<image[] | null>(null);
+    const [editImage, setEditImage] = useState<ImageFile[] | string[]>([]);
 
     const { handleMarkerUpdate } = useContext(MarkersContext);
 
     const handleEditClick = () => {
         setIsEditing(!isEditing);
+        setEditImage(marker.images);
     };
 
     const handleCancelClick = () => {
         setEditDescription('');
         setEditName('');
-        setEditImage(null);
+        setEditImage([]);
         setIsEditing(!isEditing);
     };
 
     const handleSaveClick = () => {
         handleMarkerUpdate({ ...marker, name: editName, description: editDescription });
         setIsEditing(!isEditing);
+    };
+
+    const handleRemoveImage = (imageId: string) => {
+        setEditImage((prevImages) => prevImages.filter((image) => image.id !== imageId));
     };
 
     return (
@@ -69,7 +77,11 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
 
             <hr className="my-2 h-px w-5/6 border-0 bg-gray-200 dark:bg-gray-700" />
 
-            <ImageCarousel images={marker.images} />
+            {isEditing ? (
+                <ImageDownload images={editImage} setImages={setEditImage} handleRemoveImage={handleRemoveImage} />
+            ) : (
+                <ImageCarousel images={marker.images} />
+            )}
 
             <div
                 className={clsx(

@@ -13,12 +13,13 @@ import { MarkersContext } from '@/context/MarkersContext';
 import ImagesThumbs from '@/app/components/ImagesThumbs/ImagesThumbs';
 
 interface Props {
-    images: ImageFile[];
+    images: ImageFile[] | string[];
     setImages: React.Dispatch<React.SetStateAction<ImageFile[]>>;
     handleRemoveImage: (imageId: string) => void;
 }
 
 const ImageDownload = ({ images, setImages, handleRemoveImage }: Props) => {
+    console.log(images);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             'image/*': [],

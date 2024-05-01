@@ -2,7 +2,7 @@ import { ImageFile } from '@/types/TMarker';
 import Image from 'next/image';
 
 interface Props {
-    images: ImageFile[];
+    images: ImageFile[] | string[];
     handleRemoveImage: (arg0: string) => void;
 }
 
