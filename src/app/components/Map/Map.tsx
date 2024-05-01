@@ -44,8 +44,16 @@ const Map = ({ customImage }: MapProps) => {
     }, [mapEdit]);
 
     return (
-        <div id="map" className="h-[93.4vh]">
-            <MapContainer center={center} zoom={8} maxZoom={12} minZoom={8} scrollWheelZoom={true}>
+        <div id="map" className="z-40 h-screen">
+            <MapContainer
+                center={center}
+                zoom={8}
+                maxZoom={10}
+                minZoom={8}
+                scrollWheelZoom={true}
+                zoomControl={false}
+                attributionControl={false}
+            >
                 <ImageOverlay url={customImage.src} bounds={bounds} />
                 <MarkersRender mapEdit={mapEdit} location={pathname} />
 

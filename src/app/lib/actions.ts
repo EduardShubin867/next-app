@@ -1,4 +1,5 @@
 'use server';
+
 import { ImageFile, TMarker } from '@/types/TMarker';
 import mongodb from '@/app/lib/mongodb';
 import { writeFile } from 'fs/promises';
@@ -48,9 +49,25 @@ export async function addMarker(newMarker: FormData, newMarkerFiles: FormData) {
 
     newMarkerObj.position = JSON.parse(newMarkerObj.position as string);
 
-    const res = await db.collection('krasnoe-bedstvie').insertOne(newMarkerObj);
-
-    console.log('res', res);
+    try {
+        await db.collection('krasnoe-bedstvie').insertOne(newMarkerObj);
+    } catch (error) {
+        return JSON.stringify({ succes: false, message: 'DB Error', error });
+    }
 
     return JSON.stringify(newMarkerObj);
+}
+
+export async function updateMarker(marker: TMarker) {
+    console.log(marker);
+    const db = await mongodb();
+    const updateQuery = { id: marker.id };
+    const newValues = { $set: { name: marker.name, description: marker.description } };
+
+    try {
+        await db.collection(marker.location).updateOne(updateQuery, newValues);
+    } catch (error) {
+        return JSON.stringify({ succes: false, message: 'DB Error', error });
+    }
+    return JSON.stringify({ succes: true });
 }

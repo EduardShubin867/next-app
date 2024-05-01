@@ -6,7 +6,6 @@ import { useContext } from 'react';
 import uuid from 'react-uuid';
 
 import MarkerPopup from '../MarkerPopup/MarkerPopup';
-import MarkerPopupEdit from '../MarkerPopupEdit/MarkerPopupEdit';
 import { TMarker } from '@/types/TMarker';
 import { MarkersContext } from '@/context/MarkersContext';
 
@@ -31,7 +30,7 @@ const MarkersRender = ({ mapEdit, location }: MarkersRenderProp) => {
     return markers?.map((marker: TMarker) => (
         <Marker key={uuid()} position={marker.position} icon={markerIcon(marker.icon, marker.color)}>
             <Popup minWidth={310} maxWidth={310} maxHeight={600} interactive={true} className="!cursor-default">
-                {mapEdit ? <MarkerPopupEdit marker={marker} location={location} /> : <MarkerPopup marker={marker} />}
+                <MarkerPopup marker={marker} mapEdit={mapEdit} />
             </Popup>
         </Marker>
     ));

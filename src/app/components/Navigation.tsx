@@ -20,27 +20,30 @@ const navItems: NavItem[] = [
 
 const Navigation: FC = () => {
     return (
-        <nav className="w-full bg-gray-200 bg-opacity-75 shadow-xl backdrop-blur-sm">
+        <nav className="fixed inset-x-0 top-0 z-[2000] h-[6vh] w-full bg-gray-200/75 shadow-xl backdrop-blur-sm">
             <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center">
                         <div className="shrink-0">
                             <Link href="/" className="text-xl font-bold">
-                                <HiHome />
+                                <HiHome className="transition delay-150 duration-300 ease-in-out hover:scale-125" />
                             </Link>
                         </div>
-                        <div className="hidden md:block">
-                            <div className="ml-10 flex items-baseline space-x-4">
-                                {navItems.map((item, index) => (
-                                    <Link
-                                        key={index}
-                                        href={`${item.href}`}
-                                        className=" rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-700 hover:text-white"
-                                    >
+                        <div className="ml-8 flex items-center space-x-4">
+                            {navItems.map((item, index) => (
+                                <Link
+                                    key={index}
+                                    href={`${item.href}`}
+                                    className="group relative rounded-md px-3 py-2 text-sm font-medium transition duration-300 ease-in-out"
+                                >
+                                    <span
+                                        className={`absolute inset-0 rounded-md bg-gray-700 opacity-0 transition duration-300 ease-in-out group-hover:opacity-100`}
+                                    ></span>
+                                    <span className="relative z-10 transition duration-300 ease-in-out group-hover:text-white">
                                         {item.label}
-                                    </Link>
-                                ))}
-                            </div>
+                                    </span>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>

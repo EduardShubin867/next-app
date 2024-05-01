@@ -3,10 +3,9 @@ import { LatLngExpression } from 'leaflet';
 import { ImageFile } from '@/types/TMarker';
 import { v4 as uuid } from 'uuid';
 
-import { addMarker, getMarkers } from '@/app/lib/actions';
+import { addMarker, getMarkers, updateMarker } from '@/app/lib/actions';
 
 import { TMarker } from '@/types/TMarker';
-import { nanoid } from 'nanoid';
 
 interface ContextValue {
     markers: Array<TMarker>;
@@ -25,6 +24,7 @@ interface ContextValue {
     setNewMarkerColor: React.Dispatch<React.SetStateAction<string>>;
     handleAddMarker: (event: React.SyntheticEvent) => Promise<void>;
     handleRemoveImage: (imageId: string) => void;
+    handleMarkerUpdate: (marker: TMarker) => void;
 }
 
 const initialValue: ContextValue = {
@@ -44,6 +44,7 @@ const initialValue: ContextValue = {
     setNewMarkerColor: () => {},
     handleAddMarker: async () => {},
     handleRemoveImage: () => {},
+    handleMarkerUpdate: () => {},
 };
 
 export const MarkersContext = createContext<ContextValue>(initialValue);
@@ -66,6 +67,20 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         fetchMarkers();
     }, []);
+
+    const handleMarkerUpdate = async (marker: TMarker) => {
+        try {
+            const res = JSON.parse(await updateMarker(marker));
+            if (!res.success) {
+                throw new Error(`HTTP error! status: ${res.message}`);
+            }
+            setMarkers((prev) => prev.map((prevMarker) => (prevMarker.id === marker.id ? marker : prevMarker)));
+        } catch (error) {
+            console.log(`Возникла ошибка обновления маркера ${error}`);
+        }
+
+        console.log(marker);
+    };
 
     const handleAddMarker = async (event: React.SyntheticEvent) => {
         event.preventDefault();
@@ -130,6 +145,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setNewMarkerColor,
         handleAddMarker,
         handleRemoveImage,
+        handleMarkerUpdate,
     };
 
     return <MarkersContext.Provider value={value}>{children}</MarkersContext.Provider>;

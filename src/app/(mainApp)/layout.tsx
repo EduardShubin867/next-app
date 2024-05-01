@@ -9,12 +9,12 @@ type MainAppLayoutProps = {
 
 const MainAppLayout: FC<MainAppLayoutProps> = ({ children }) => {
     return (
-        <>
+        <div className="relative">
             <StoreProvider>
                 <Navigation />
                 {children}
             </StoreProvider>
-        </>
+        </div>
     );
 };
 export default MainAppLayout;

@@ -1,4 +1,4 @@
-import { useContext, SyntheticEvent } from 'react';
+import { useContext } from 'react';
 
 import CustomTextInput from '@/app/components/CustomTextInput/CustomTextInput';
 import CustomTextArea from '@/app/components/CustomTextArea/CustomTextArea';
@@ -6,13 +6,19 @@ import MarkerIcon from '@/app/components/Controls/MarkerIcon/MarkerIcon';
 import MarkerColorOptions from '@/app/components/Controls/MarkerColorOptions/MarkerColorOptions';
 import ImageDownload from '@/app/components/Controls/ImageDownload/ImageDownload';
 
-import { TMarker } from '@/types/TMarker';
-
 import { MarkersContext } from '@/context/MarkersContext';
 
 const ControlsForm = () => {
-    const { newMarkerName, setNewMarkerName, newMarkerDescription, setNewMarkerDescription, handleAddMarker } =
-        useContext(MarkersContext);
+    const {
+        newMarkerName,
+        setNewMarkerName,
+        newMarkerDescription,
+        setNewMarkerDescription,
+        handleAddMarker,
+        handleRemoveImage,
+        newMarkerImage,
+        setNewMarkerImage,
+    } = useContext(MarkersContext);
 
     return (
         <form noValidate onSubmit={handleAddMarker} className="mx-auto max-w-sm">
@@ -45,7 +51,11 @@ const ControlsForm = () => {
             </div>
 
             <div>
-                <ImageDownload />
+                <ImageDownload
+                    images={newMarkerImage}
+                    handleRemoveImage={handleRemoveImage}
+                    setImages={setNewMarkerImage}
+                />
             </div>
 
             <button
