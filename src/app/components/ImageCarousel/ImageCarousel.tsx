@@ -1,11 +1,13 @@
 'use client';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Suspense } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
 import { ImageFile } from '@/types/TMarker';
 import ImageDownload from '../Controls/ImageDownload/ImageDownload';
+import Loader from './Loader';
 
 type ImageArray = Array<ImageFile>;
 interface ImageCarouselProps {
@@ -36,13 +38,15 @@ const ImageCarousel = ({ images, isEditing = false }: ImageCarouselProps) => {
             >
                 {images.map((img, index) => (
                     <div key={uuidv4()}>
-                        <Image
-                            src={handleImages(img)}
-                            className="h-auto w-full rounded shadow-md"
-                            width={360}
-                            height={360}
-                            alt={`Slide ${index + 1}`}
-                        />
+                        <Suspense fallback={<Loader />}>
+                            <Image
+                                src={handleImages(img)}
+                                className="h-auto w-full rounded shadow-md"
+                                width={300}
+                                height={300}
+                                alt={`Slide ${index + 1}`}
+                            />
+                        </Suspense>
                     </div>
                 ))}
             </Carousel>
