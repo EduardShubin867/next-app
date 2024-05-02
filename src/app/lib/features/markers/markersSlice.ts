@@ -23,11 +23,9 @@ export const fetchMarkers = createAsyncThunk('markers/fetchMarkers', async () =>
 
 export const addNewMarker = createAsyncThunk('markers/addNewMarker', async (newMarker: TMarker) => {
     // const formData = new FormData();
-
     // newMarker.images.forEach((img, index) => {
     //     formData.append(`image[${index}]`, img, img.name);
     // });
-
     // // Add data to FormData
     // formData.append('id', newMarker.id);
     // formData.append('name', newMarker.name);
@@ -36,23 +34,21 @@ export const addNewMarker = createAsyncThunk('markers/addNewMarker', async (newM
     // formData.append('position', JSON.stringify(newMarker.position));
     // formData.append('color', newMarker.color);
     // formData.append('location', newMarker.location);
-
-    try {
-        const response = await addMarker(newMarker);
-
-        return response;
-    } catch (error) {
-        console.error('Error processing request:', error);
-        throw error;
-    }
+    // try {
+    //     const response = await addMarker(newMarker);
+    //     return response;
+    // } catch (error) {
+    //     console.error('Error processing request:', error);
+    //     throw error;
+    // }
 });
 
 export const updateMarker = createAsyncThunk('markers/updateMarker', async (marker: TMarker) => {
     const formData = new FormData();
 
-    marker.images.forEach((img, index) => {
-        formData.append(`image[${index}]`, img, img.name);
-    });
+    // marker.images.forEach((img, index) => {
+    //     formData.append(`image[${index}]`, img, img.name);
+    // });
 
     // Add data to FormData
     formData.append('id', marker.id);
@@ -102,7 +98,7 @@ export const markersSlice = createSlice({
             .addCase(fetchMarkers.fulfilled, (state, action) => {
                 state.status = 'succeeded';
 
-                state.markers = state.markers.concat(action.payload);
+                // state.markers = state.markers.concat(action.payload);
             })
             .addCase(fetchMarkers.rejected, (state, action) => {
                 state.status = 'failed';
@@ -110,7 +106,7 @@ export const markersSlice = createSlice({
             })
             // Add marker
             .addCase(addNewMarker.fulfilled, (state, action) => {
-                state.markers.push(action.payload.newMarker);
+                // state.markers.push(action.payload.newMarker);
             })
             // Update marker
             .addCase(updateMarker.pending, (state, action) => {
