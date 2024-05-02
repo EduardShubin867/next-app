@@ -30,7 +30,7 @@ interface ContextValue {
     handleAddMarker: (event: React.SyntheticEvent) => Promise<void>;
     handleRemoveImage: (imageId: string | ImageFile) => void;
     handleMarkerUpdate: (marker: TMarker) => void;
-    handleRemoveMarker: (id: string) => void;
+    handleRemoveMarker: (marker: TMarker) => void;
 }
 
 const initialValue: ContextValue = {
@@ -137,13 +137,13 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         });
     };
 
-    const handleRemoveMarker = async (id: string) => {
+    const handleRemoveMarker = async (marker: TMarker) => {
         try {
-            const response = JSON.parse(await removeMarker(id, location));
+            const response = JSON.parse(await removeMarker(marker.id, location, marker.images));
             if (!response.success) {
                 throw new Error(`Deleting marker error: ${response.message}`);
             }
-            setMarkers((prev) => prev.filter((marker) => marker.id != id));
+            setMarkers((prev) => prev.filter((prevMarker) => prevMarker.id != marker.id));
         } catch (error) {
             console.log(error);
         }

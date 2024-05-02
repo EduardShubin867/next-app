@@ -119,7 +119,7 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
                             <MdOutlineCancelPresentation />
                         </CustomButton>
                     )}
-                    <CustomButton color="red" onClick={() => handleRemoveMarker(marker.id)}>
+                    <CustomButton color="red" onClick={() => handleRemoveMarker(marker)}>
                         <MdOutlineDeleteForever />
                     </CustomButton>
                 </div>

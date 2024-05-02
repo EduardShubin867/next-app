@@ -68,7 +68,7 @@ export async function updateMarker(marker: TMarker) {
     return JSON.stringify({ success: true });
 }
 
-export async function removeMarker(id: string, location: string) {
+export async function removeMarker(id: string, location: string, images: string[]) {
     const db = await mongodb();
     const query = { id };
 
