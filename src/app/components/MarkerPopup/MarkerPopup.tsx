@@ -22,29 +22,27 @@ interface Props {
     location?: string;
 }
 
-type image = {
-    data_url: string;
-    name: string;
-    file?: File;
-};
+interface EditImages {
+    old: string[];
+    new: ImageFile[];
+}
 
 const MarkerPopup = ({ marker, mapEdit }: Props) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [editName, setEditName] = useState('');
-    const [editDescription, setEditDescription] = useState('');
-    const [editImage, setEditImage] = useState<ImageFile[] | string[]>([]);
+    const [editName, setEditName] = useState(marker.name);
+    const [editDescription, setEditDescription] = useState(marker.description);
+    const [editImage, setEditImage] = useState<EditImages>({ old: marker.images, new: [] });
 
-    const { handleMarkerUpdate } = useContext(MarkersContext);
+    const { handleMarkerUpdate, handleRemoveMarker } = useContext(MarkersContext);
+
+    console.log('Popup rerender');
+    console.log(editName);
 
     const handleEditClick = () => {
         setIsEditing(!isEditing);
-        setEditImage(marker.images);
     };
 
     const handleCancelClick = () => {
-        setEditDescription('');
-        setEditName('');
-        setEditImage([]);
         setIsEditing(!isEditing);
     };
 
@@ -53,8 +51,15 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
         setIsEditing(!isEditing);
     };
 
-    const handleRemoveImage = (imageId: string) => {
-        setEditImage((prevImages) => prevImages.filter((image) => image.id !== imageId));
+    const handleRemoveImage = (image: ImageFile | string) => {
+        setEditImage((prevImages) => {
+            if (image instanceof File) {
+                const newImages = prevImages.new.filter((prevImage) => prevImage.id !== image.id);
+                return { old: prevImages.old, new: newImages };
+            }
+            const oldImages = prevImages.old.filter((prevImage) => prevImage !== image);
+            return { old: oldImages, new: prevImages.new };
+        });
     };
 
     return (
@@ -114,7 +119,7 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
                             <MdOutlineCancelPresentation />
                         </CustomButton>
                     )}
-                    <CustomButton color="red" onClick={() => console.log('deleted')}>
+                    <CustomButton color="red" onClick={() => handleRemoveMarker(marker.id)}>
                         <MdOutlineDeleteForever />
                     </CustomButton>
                 </div>

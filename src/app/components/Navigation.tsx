@@ -26,7 +26,7 @@ const Navigation: FC = () => {
                     <div className="flex items-center">
                         <div className="shrink-0">
                             <Link href="/" className="text-xl font-bold">
-                                <HiHome className="transition delay-150 duration-300 ease-in-out hover:scale-125" />
+                                <HiHome className="transition duration-300 ease-in-out hover:scale-125" />
                             </Link>
                         </div>
                         <div className="ml-8 flex items-center space-x-4">

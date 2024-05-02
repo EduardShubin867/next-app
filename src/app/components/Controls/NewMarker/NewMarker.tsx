@@ -40,8 +40,8 @@ const NewMarker = () => {
 
                     <hr className="my-2" />
 
-                    {newMarkerImage && newMarkerImage.length > 0 ? (
-                        <ImageCarousel images={newMarkerImage} />
+                    {newMarkerImage && newMarkerImage.new.length > 0 ? (
+                        <ImageCarousel images={newMarkerImage.new} />
                     ) : (
                         <div className="h-[301px] bg-gray-300" /> // Placeholder box if no image
                     )}

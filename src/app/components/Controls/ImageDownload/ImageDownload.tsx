@@ -1,25 +1,26 @@
 'use client';
 
-import React, { useEffect, useContext, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
-import Image from 'next/image';
 import clsx from 'clsx';
 import { AiOutlineUpload } from 'react-icons/ai';
 import { v4 as uuid } from 'uuid';
 
 import { ImageFile } from '@/types/TMarker';
 
-import { MarkersContext } from '@/context/MarkersContext';
 import ImagesThumbs from '@/app/components/ImagesThumbs/ImagesThumbs';
 
+interface EditImages {
+    old: string[];
+    new: ImageFile[];
+}
 interface Props {
-    images: ImageFile[] | string[];
-    setImages: React.Dispatch<React.SetStateAction<ImageFile[]>>;
-    handleRemoveImage: (imageId: string) => void;
+    images: EditImages;
+    setImages: React.Dispatch<React.SetStateAction<EditImages>>;
+    handleRemoveImage: (image: string | ImageFile) => void;
 }
 
 const ImageDownload = ({ images, setImages, handleRemoveImage }: Props) => {
-    console.log(images);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             'image/*': [],
@@ -32,38 +33,48 @@ const ImageDownload = ({ images, setImages, handleRemoveImage }: Props) => {
                         id: uuid(),
                     })
                 );
-                return [...prevState, ...newFiles];
+                return { new: [...prevState.new, ...newFiles], old: [...prevState.old] } as EditImages;
             });
         },
     });
 
-    useEffect(() => {
-        setImages((prevState) => {
-            return prevState.map((file) => {
-                URL.revokeObjectURL(file.url);
-                return file;
-            });
-        });
-    }, []);
+    const handleImageType = (image: ImageFile | string) => {
+        if (typeof image === 'string') {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    // useEffect(() => {
+    //     setImages((prevState) => {
+    //         return prevState.new.map((image) => {
+    //             if (handleImageType(image)) {
+    //                 URL.revokeObjectURL(image.url);
+    //             }
+    //             return image;
+    //         });
+    //     });
+    // }, []);
 
     const uploadColSpan = useMemo(() => {
         const imagesPerRow = 3;
-        const currentRowImageCount = images.length % imagesPerRow;
+        const currentRowImageCount = images.new.length % imagesPerRow;
         const remainingSpaceOnRow = currentRowImageCount === 0 ? imagesPerRow : imagesPerRow - currentRowImageCount;
         return Math.min(remainingSpaceOnRow, 3);
-    }, [images.length]);
+    }, [images.new.length]);
 
     return (
         <div
             className={clsx(
                 'grid h-auto w-full grid-cols-3 place-items-center gap-1',
-                images.length > 3 ? 'grid-rows-2' : 'grid-rows-1'
+                images.new.length > 3 ? 'grid-rows-2' : 'grid-rows-1'
             )}
         >
             <ImagesThumbs images={images} handleRemoveImage={handleRemoveImage} />
             <div
                 {...getRootProps()}
-                className={clsx(`col-span-${uploadColSpan} w-full`, images.length >= 6 ? 'hidden' : 'block')}
+                className={clsx(`col-span-${uploadColSpan} w-full`, images.new.length >= 6 ? 'hidden' : 'block')}
             >
                 <input {...getInputProps()} />
                 <div

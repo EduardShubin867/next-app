@@ -19,7 +19,8 @@
 # misc
 .DS_Store
 *.pem
-/public/aseets/images/map/*
+/public/assets/images/map/*
+
 
 # debug
 npm-debug.log*

@@ -23,7 +23,6 @@ const ControlsForm = () => {
     return (
         <form noValidate onSubmit={handleAddMarker} className="mx-auto max-w-sm">
             <div>
-                <label htmlFor="newMarkerName">Иконка маркера</label>
                 <div className="mb-1 flex justify-center">
                     <MarkerIcon />
                 </div>
@@ -39,7 +38,7 @@ const ControlsForm = () => {
                 />
             </div>
 
-            <div className="mb-5">
+            <div className="mb-4">
                 <div className="max-w-md">
                     <CustomTextArea
                         label="Описание маркера"
@@ -50,7 +49,7 @@ const ControlsForm = () => {
                 </div>
             </div>
 
-            <div>
+            <div className="mb-2">
                 <ImageDownload
                     images={newMarkerImage}
                     handleRemoveImage={handleRemoveImage}

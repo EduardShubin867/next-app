@@ -25,9 +25,10 @@ interface Marker {
     location: string;
 }
 
-export async function addMarker(newMarker: FormData, newMarkerFiles: FormData) {
+export async function addMarker(newMarker: string, newMarkerFiles: FormData) {
     const db = await mongodb();
-    const images = [];
+
+    const newMarkerObj = JSON.parse(newMarker);
 
     const files = newMarkerFiles.getAll('images[]') as unknown as File[];
 
@@ -39,15 +40,11 @@ export async function addMarker(newMarker: FormData, newMarkerFiles: FormData) {
         try {
             const buffer = new Uint8Array(await file.arrayBuffer());
             await writeFile(filePath, buffer);
-            images.push(`/assets/images/map/${fileName}.${fileExt}`);
+            newMarkerObj.images.push(`/assets/images/map/${fileName}.${fileExt}`);
         } catch (error) {
             console.log({ success: false, message: `Ошибка при загрузке файла ${file.name}: ${error}` });
         }
     }
-
-    const newMarkerObj: Marker = { ...Object.fromEntries(newMarker), images } as Marker;
-
-    newMarkerObj.position = JSON.parse(newMarkerObj.position as string);
 
     try {
         await db.collection('krasnoe-bedstvie').insertOne(newMarkerObj);
@@ -59,7 +56,6 @@ export async function addMarker(newMarker: FormData, newMarkerFiles: FormData) {
 }
 
 export async function updateMarker(marker: TMarker) {
-    console.log(marker);
     const db = await mongodb();
     const updateQuery = { id: marker.id };
     const newValues = { $set: { name: marker.name, description: marker.description } };
@@ -67,7 +63,21 @@ export async function updateMarker(marker: TMarker) {
     try {
         await db.collection(marker.location).updateOne(updateQuery, newValues);
     } catch (error) {
-        return JSON.stringify({ succes: false, message: 'DB Error', error });
+        return JSON.stringify({ success: false, message: 'DB Error', error });
     }
-    return JSON.stringify({ succes: true });
+    return JSON.stringify({ success: true });
+}
+
+export async function removeMarker(id: string, location: string) {
+    const db = await mongodb();
+    const query = { id };
+
+    try {
+        await db.collection(location).deleteOne(query);
+    } catch (error) {
+        const message = `Deleting is error ${error}`;
+        console.error(message);
+        return JSON.stringify({ success: false, message });
+    }
+    return JSON.stringify({ success: true });
 }

@@ -3,9 +3,14 @@ import { LatLngExpression } from 'leaflet';
 import { ImageFile } from '@/types/TMarker';
 import { v4 as uuid } from 'uuid';
 
-import { addMarker, getMarkers, updateMarker } from '@/app/lib/actions';
+import { addMarker, getMarkers, removeMarker, updateMarker } from '@/app/lib/actions';
 
 import { TMarker } from '@/types/TMarker';
+
+interface EditImages {
+    old: string[];
+    new: ImageFile[];
+}
 
 interface ContextValue {
     markers: Array<TMarker>;
@@ -16,15 +21,16 @@ interface ContextValue {
     setNewMarkerName: React.Dispatch<React.SetStateAction<string>>;
     newMarkerDescription: string;
     setNewMarkerDescription: React.Dispatch<React.SetStateAction<string>>;
-    newMarkerImage: ImageFile[];
-    setNewMarkerImage: React.Dispatch<React.SetStateAction<ImageFile[]>>;
+    newMarkerImage: EditImages;
+    setNewMarkerImage: React.Dispatch<React.SetStateAction<EditImages>>;
     newMarkerIcon: string;
     setNewMarkerIcon: React.Dispatch<React.SetStateAction<string>>;
     newMarkerColor: string;
     setNewMarkerColor: React.Dispatch<React.SetStateAction<string>>;
     handleAddMarker: (event: React.SyntheticEvent) => Promise<void>;
-    handleRemoveImage: (imageId: string) => void;
+    handleRemoveImage: (imageId: string | ImageFile) => void;
     handleMarkerUpdate: (marker: TMarker) => void;
+    handleRemoveMarker: (id: string) => void;
 }
 
 const initialValue: ContextValue = {
@@ -36,7 +42,7 @@ const initialValue: ContextValue = {
     setNewMarkerName: () => {},
     newMarkerDescription: '',
     setNewMarkerDescription: () => {},
-    newMarkerImage: [],
+    newMarkerImage: { old: [], new: [] },
     setNewMarkerImage: () => {},
     newMarkerIcon: 'fa-solid fa-location-dot',
     setNewMarkerIcon: () => {},
@@ -45,6 +51,7 @@ const initialValue: ContextValue = {
     handleAddMarker: async () => {},
     handleRemoveImage: () => {},
     handleMarkerUpdate: () => {},
+    handleRemoveMarker: () => {},
 };
 
 export const MarkersContext = createContext<ContextValue>(initialValue);
@@ -54,7 +61,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [newPosition, setNewPosition] = useState<LatLngExpression>([0, 0]);
     const [newMarkerName, setNewMarkerName] = useState('');
     const [newMarkerDescription, setNewMarkerDescription] = useState('');
-    const [newMarkerImage, setNewMarkerImage] = useState<ImageFile[]>([]);
+    const [newMarkerImage, setNewMarkerImage] = useState<EditImages>({ old: [], new: [] });
     const [newMarkerIcon, setNewMarkerIcon] = useState<string>('fa-solid fa-location-dot');
     const [newMarkerColor, setNewMarkerColor] = useState<string>('black');
 
@@ -71,6 +78,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const handleMarkerUpdate = async (marker: TMarker) => {
         try {
             const res = JSON.parse(await updateMarker(marker));
+
             if (!res.success) {
                 throw new Error(`HTTP error! status: ${res.message}`);
             }
@@ -78,8 +86,6 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         } catch (error) {
             console.log(`Возникла ошибка обновления маркера ${error}`);
         }
-
-        console.log(marker);
     };
 
     const handleAddMarker = async (event: React.SyntheticEvent) => {
@@ -90,33 +96,24 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
             name: newMarkerName,
             icon: newMarkerIcon,
             description: newMarkerDescription,
-            images: newMarkerImage || [],
+            images: newMarkerImage.old || [],
             position: newPosition,
             color: newMarkerColor,
             location: location,
         };
 
-        const markerData = new FormData();
         const markerFiles = new FormData();
 
-        markerData.append('id', newMarker.id);
-        markerData.append('name', newMarker.name);
-        markerData.append('icon', newMarker.icon);
-        markerData.append('description', newMarker.description);
-        markerData.append('position', JSON.stringify(newMarker.position));
-        markerData.append('color', newMarker.color);
-        markerData.append('location', newMarker.location);
-
-        newMarker.images.forEach((img, index) => {
+        newMarkerImage.new.forEach((img, index) => {
             markerFiles.append(`images[]`, img);
         });
 
         try {
-            const response = JSON.parse(await addMarker(markerData, markerFiles));
+            const response = JSON.parse(await addMarker(JSON.stringify(newMarker), markerFiles));
             setMarkers((prev) => [...prev, response]);
             setNewMarkerName('');
             setNewMarkerDescription('');
-            setNewMarkerImage([]);
+            setNewMarkerImage({ old: [], new: [] });
             setNewMarkerIcon('fa-solid fa-location-dot');
             setNewPosition([0, 0]);
         } catch (error) {
@@ -124,8 +121,32 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         }
     };
 
-    const handleRemoveImage = (imageId: string) => {
-        setNewMarkerImage((prevImages) => prevImages.filter((image) => image.id !== imageId));
+    const handleRemoveImage = (image: ImageFile | string) => {
+        setNewMarkerImage((prevImages) => {
+            if (image instanceof File) {
+                return {
+                    ...prevImages,
+                    new: prevImages.new.filter((prevImage) => prevImage.id !== image.id),
+                };
+            } else {
+                return {
+                    ...prevImages,
+                    old: prevImages.old.filter((prevImage) => prevImage !== image),
+                };
+            }
+        });
+    };
+
+    const handleRemoveMarker = async (id: string) => {
+        try {
+            const response = JSON.parse(await removeMarker(id, location));
+            if (!response.success) {
+                throw new Error(`Deleting marker error: ${response.message}`);
+            }
+            setMarkers((prev) => prev.filter((marker) => marker.id != id));
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const value: ContextValue = {
@@ -146,6 +167,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         handleAddMarker,
         handleRemoveImage,
         handleMarkerUpdate,
+        handleRemoveMarker,
     };
 
     return <MarkersContext.Provider value={value}>{children}</MarkersContext.Provider>;

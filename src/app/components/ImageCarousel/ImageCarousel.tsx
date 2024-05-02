@@ -13,13 +13,13 @@ interface ImageCarouselProps {
     isEditing?: boolean;
 }
 
-function handleImages(image: ImageFile | string) {
+const handleImages = (image: ImageFile | string) => {
     if (typeof image === 'string') {
         return image;
     } else {
         return image.url;
     }
-}
+};
 
 const ImageCarousel = ({ images, isEditing = false }: ImageCarouselProps) => {
     const multipleItems = images.length > 1 || isEditing;

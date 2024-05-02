@@ -12,7 +12,7 @@ export type TMarker = {
     name: string;
     icon: string;
     description: string;
-    images: Array<ImageFile> | Array<string>;
+    images: Array<string>;
     position: LatLngExpression;
     color: string;
     location: string;
