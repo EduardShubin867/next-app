@@ -1,7 +1,7 @@
 'use client';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 
 import uuid from 'react-uuid';
 
@@ -15,6 +15,8 @@ interface MarkersRenderProp {
     mapEdit: boolean;
     location: string;
 }
+
+const PureMarkerPopup = memo(MarkerPopup);
 
 const MarkersRender = ({ mapEdit, location }: MarkersRenderProp) => {
     const { markers } = useContext(MarkersContext);
@@ -30,7 +32,7 @@ const MarkersRender = ({ mapEdit, location }: MarkersRenderProp) => {
     return markers?.map((marker: TMarker) => (
         <Marker key={uuid()} position={marker.position} icon={markerIcon(marker.icon, marker.color)}>
             <Popup minWidth={310} maxWidth={310} maxHeight={600} interactive={true} className="!cursor-default">
-                <MarkerPopup marker={marker} mapEdit={mapEdit} />
+                <PureMarkerPopup marker={marker} mapEdit={mapEdit} />
             </Popup>
         </Marker>
     ));

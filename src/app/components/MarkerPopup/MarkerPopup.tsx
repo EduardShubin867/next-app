@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import { TMarker } from '@/types/TMarker';
 import clsx from 'clsx';
 
@@ -35,32 +35,39 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
 
     const { handleMarkerUpdate, handleRemoveMarker } = useContext(MarkersContext);
 
-    console.log('Popup rerender');
-    console.log(editName);
-
-    const handleEditClick = () => {
+    const handleEditClick = (event: React.SyntheticEvent) => {
+        event.stopPropagation();
         setIsEditing(!isEditing);
     };
 
-    const handleCancelClick = () => {
+    const handleCancelClick = (event: React.SyntheticEvent) => {
+        event.stopPropagation();
         setIsEditing(!isEditing);
     };
 
-    const handleSaveClick = () => {
-        handleMarkerUpdate({ ...marker, name: editName, description: editDescription });
+    const handleSaveClick = async (event: React.SyntheticEvent) => {
+        event.stopPropagation();
+        await handleMarkerUpdate(
+            { ...marker, name: editName, description: editDescription, images: editImage.old },
+            editImage.new
+        );
         setIsEditing(!isEditing);
     };
 
-    const handleRemoveImage = (image: ImageFile | string) => {
+    const handleRemoveImage = useCallback((image: ImageFile | string, event: React.SyntheticEvent) => {
+        event.stopPropagation();
         setEditImage((prevImages) => {
+            const { old, new: newImages } = prevImages;
+
             if (image instanceof File) {
-                const newImages = prevImages.new.filter((prevImage) => prevImage.id !== image.id);
-                return { old: prevImages.old, new: newImages };
+                const filteredNewImages = newImages.filter((img) => img.id !== image.id);
+                return { old, new: filteredNewImages };
             }
-            const oldImages = prevImages.old.filter((prevImage) => prevImage !== image);
-            return { old: oldImages, new: prevImages.new };
+
+            const filteredOldImages = old.filter((img) => img !== image);
+            return { old: filteredOldImages, new: newImages };
         });
-    };
+    }, []);
 
     return (
         <div className="flex min-h-min flex-col items-center p-1">

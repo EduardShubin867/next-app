@@ -17,7 +17,7 @@ interface EditImages {
 interface Props {
     images: EditImages;
     setImages: React.Dispatch<React.SetStateAction<EditImages>>;
-    handleRemoveImage: (image: string | ImageFile) => void;
+    handleRemoveImage: (image: string | ImageFile, event: React.SyntheticEvent) => void;
 }
 
 const ImageDownload = ({ images, setImages, handleRemoveImage }: Props) => {
@@ -33,7 +33,7 @@ const ImageDownload = ({ images, setImages, handleRemoveImage }: Props) => {
                         id: uuid(),
                     })
                 );
-                return { new: [...prevState.new, ...newFiles], old: [...prevState.old] } as EditImages;
+                return { old: [...prevState.old], new: [...prevState.new, ...newFiles] } as EditImages;
             });
         },
     });
@@ -79,7 +79,7 @@ const ImageDownload = ({ images, setImages, handleRemoveImage }: Props) => {
                 <input {...getInputProps()} />
                 <div
                     className={clsx(
-                        'flex h-auto min-h-24 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-2',
+                        'flex size-[5.6rem] cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-2',
                         isDragActive ? 'border-gray-400 bg-gray-300' : 'border-gray-300 bg-gray-200'
                     )}
                 >

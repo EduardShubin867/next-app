@@ -4,7 +4,7 @@ import clsx from 'clsx';
 interface Props {
     children: ReactNode;
     color: 'blue' | 'green' | 'cyan' | 'red';
-    onClick: () => void;
+    onClick: (event: React.SyntheticEvent) => void;
 }
 
 const CustomButton = ({ children, color, onClick }: Props) => {
@@ -17,7 +17,7 @@ const CustomButton = ({ children, color, onClick }: Props) => {
                 color === 'cyan' && `border-cyan-700 text-cyan-700 hover:bg-cyan-800 focus:ring-cyan-300`,
                 color === 'red' && `border-red-700 text-red-700 hover:bg-red-800 focus:ring-red-300`
             )}
-            onClick={onClick}
+            onClick={(event) => onClick(event)}
         >
             {children}
         </button>

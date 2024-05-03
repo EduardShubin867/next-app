@@ -7,7 +7,7 @@ interface EditImages {
 }
 interface Props {
     images: EditImages;
-    handleRemoveImage: (arg0: string | ImageFile) => void;
+    handleRemoveImage: (arg0: string | ImageFile, arg1: React.SyntheticEvent) => void;
 }
 
 const ImagesThumbs = ({ images, handleRemoveImage }: Props) => {
@@ -19,7 +19,7 @@ const ImagesThumbs = ({ images, handleRemoveImage }: Props) => {
         }
     };
 
-    const imagesIterable = [...images.new, ...images.old];
+    const imagesIterable = [...images.old, ...images.new];
 
     return imagesIterable.map((image, index) => {
         const key = typeof image === 'string' ? image : image.id || image.url;
@@ -36,7 +36,7 @@ const ImagesThumbs = ({ images, handleRemoveImage }: Props) => {
                 </div>
                 <div
                     className="absolute right-0 top-0 flex size-6 cursor-pointer items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100"
-                    onClick={() => handleRemoveImage(image)}
+                    onClick={(event) => handleRemoveImage(image, event)}
                 >
                     &times;
                 </div>

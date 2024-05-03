@@ -29,7 +29,7 @@ interface ContextValue {
     setNewMarkerColor: React.Dispatch<React.SetStateAction<string>>;
     handleAddMarker: (event: React.SyntheticEvent) => Promise<void>;
     handleRemoveImage: (imageId: string | ImageFile) => void;
-    handleMarkerUpdate: (marker: TMarker) => void;
+    handleMarkerUpdate: (marker: TMarker, images: ImageFile[]) => void;
     handleRemoveMarker: (marker: TMarker) => void;
 }
 
@@ -75,14 +75,19 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         fetchMarkers();
     }, []);
 
-    const handleMarkerUpdate = async (marker: TMarker) => {
+    const handleMarkerUpdate = async (marker: TMarker, editImage: ImageFile[]) => {
+        const imageFiles = new FormData();
+        editImage.forEach((img, index) => {
+            imageFiles.append(`images[]`, img);
+        });
+
         try {
-            const res = JSON.parse(await updateMarker(marker));
+            const res = JSON.parse(await updateMarker(marker, imageFiles));
 
             if (!res.success) {
                 throw new Error(`HTTP error! status: ${res.message}`);
             }
-            setMarkers((prev) => prev.map((prevMarker) => (prevMarker.id === marker.id ? marker : prevMarker)));
+            setMarkers((prev) => prev.map((prevMarker) => (prevMarker.id === marker.id ? res.data : prevMarker)));
         } catch (error) {
             console.log(`Возникла ошибка обновления маркера ${error}`);
         }

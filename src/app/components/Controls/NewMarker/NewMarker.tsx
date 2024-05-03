@@ -3,6 +3,7 @@
 import React, { useContext } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
+import clsx from 'clsx';
 
 import ImageCarousel from '../../ImageCarousel/ImageCarousel';
 import { MarkersContext } from '@/context/MarkersContext';
@@ -33,20 +34,30 @@ const NewMarker = () => {
     return newPosition ? (
         <Marker position={newPosition} icon={markerIcon}>
             <Popup className="marker-popup">
-                <div className="new-marker-popup block justify-center p-0">
-                    <h3 className={`m-2 text-center ${newMarkerName ? '' : 'text-gray-500'}`}>
+                <div className="flex min-h-min flex-col items-center p-1">
+                    <h3
+                        className={clsx(
+                            `mt-1 w-10/12 text-center text-xl font-semibold`,
+                            newMarkerName ? 'text-black' : 'pointer-events-none select-none text-gray-500'
+                        )}
+                    >
                         {newMarkerName || 'Название'}
                     </h3>
 
-                    <hr className="my-2" />
+                    <hr className="my-2 h-px w-5/6 border-0 bg-gray-200 dark:bg-gray-700" />
 
                     {newMarkerImage && newMarkerImage.new.length > 0 ? (
                         <ImageCarousel images={newMarkerImage.new} />
                     ) : (
-                        <div className="h-[301px] bg-gray-300" /> // Placeholder box if no image
+                        <div className="size-[295px] animate-pulse rounded bg-gray-300" />
                     )}
 
-                    <div className="my-2 px-1 text-sm">
+                    <div
+                        className={clsx(
+                            `my-2 block min-h-min min-w-[295px] max-w-full text-base font-medium antialiased`,
+                            newMarkerDescription ? 'text-black' : 'pointer-events-none select-none text-gray-500'
+                        )}
+                    >
                         {newMarkerDescription || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'}
                     </div>
                 </div>

@@ -6,7 +6,6 @@ import { Carousel } from 'react-responsive-carousel';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
 import { ImageFile } from '@/types/TMarker';
-import ImageDownload from '../Controls/ImageDownload/ImageDownload';
 import Loader from './Loader';
 
 type ImageArray = Array<ImageFile>;
