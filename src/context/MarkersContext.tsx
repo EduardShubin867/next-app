@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { LatLngExpression } from 'leaflet';
 import { ImageFile } from '@/types/TMarker';
 import { v4 as uuid } from 'uuid';
@@ -85,8 +86,11 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
             const res = JSON.parse(await updateMarker(marker, imageFiles));
 
             if (!res.success) {
+                toast.error(`Маркер ${marker.name} не обновлен: ${res.message}`);
                 throw new Error(`HTTP error! status: ${res.message}`);
             }
+
+            toast.info(`Маркер ${marker.name} обновлен`);
             setMarkers((prev) => prev.map((prevMarker) => (prevMarker.id === marker.id ? res.data : prevMarker)));
         } catch (error) {
             console.log(`Возникла ошибка обновления маркера ${error}`);
@@ -115,14 +119,21 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         try {
             const response = JSON.parse(await addMarker(JSON.stringify(newMarker), markerFiles));
-            setMarkers((prev) => [...prev, response]);
+            if (!response.success) {
+                toast.error(`Ошбика добавления маркера: ${response.message}`);
+                throw new Error(`Adding marker error: ${response.message}`);
+            }
+
+            setMarkers((prev) => [...prev, response.data]);
+            toast.success(`Маркер ${response.data.name} добавлен`);
+
             setNewMarkerName('');
             setNewMarkerDescription('');
             setNewMarkerImage({ old: [], new: [] });
             setNewMarkerIcon('fa-solid fa-location-dot');
             setNewPosition([0, 0]);
         } catch (error) {
-            console.log('Error on adding marker');
+            console.log('Error on adding marker:', error);
         }
     };
 
@@ -145,8 +156,12 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const handleRemoveMarker = async (marker: TMarker) => {
         try {
             const response = JSON.parse(await removeMarker(marker.id, location, marker.images));
-            if (!response.success) throw new Error(`Deleting marker error: ${response.message}`);
+            if (!response.success) {
+                toast.error(`Ошбика удаления маркера: ${response.message}`);
+                throw new Error(`Deleting marker error: ${response.message}`);
+            }
 
+            toast.success(`Маркер ${marker.name} удален`);
             setMarkers((prev) => prev.filter((prevMarker) => prevMarker.id != marker.id));
         } catch (error) {
             console.log(error);

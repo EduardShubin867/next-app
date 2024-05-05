@@ -1,7 +1,8 @@
 'use client';
 import { FC, ReactNode } from 'react';
 import Navigation from '@/app/components/Navigation';
-import StoreProvider from '@/app/StoreProvider';
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type MainAppLayoutProps = {
     children: ReactNode;
@@ -10,10 +11,21 @@ type MainAppLayoutProps = {
 const MainAppLayout: FC<MainAppLayoutProps> = ({ children }) => {
     return (
         <div className="relative">
-            <StoreProvider>
-                <Navigation />
-                {children}
-            </StoreProvider>
+            <Navigation />
+            {children}
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
         </div>
     );
 };

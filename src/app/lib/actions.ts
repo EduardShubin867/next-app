@@ -31,7 +31,6 @@ interface Marker {
 
 export async function addMarker(newMarker: string, newMarkerFiles: FormData) {
     const db = await mongodb();
-    console.log(process.env.NODE_ENV === 'development');
 
     const newMarkerObj = JSON.parse(newMarker);
 
@@ -61,7 +60,7 @@ export async function addMarker(newMarker: string, newMarkerFiles: FormData) {
         return JSON.stringify({ succes: false, message: 'DB Error', error });
     }
 
-    return JSON.stringify(newMarkerObj);
+    return JSON.stringify({ success: true, data: newMarkerObj });
 }
 
 export async function updateMarker(marker: TMarker, imageFiles: FormData) {

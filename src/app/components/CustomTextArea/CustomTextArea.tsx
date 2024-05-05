@@ -1,10 +1,10 @@
-import { Label, Textarea } from 'flowbite-react'
+import { Label, Textarea } from 'flowbite-react';
 
 interface Props {
-    label: string
-    value: string
-    id: string | undefined
-    onChange: (arg0: string) => void
+    label: string;
+    value: string;
+    id: string | undefined;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const CustomTextArea = ({ label, value, id, onChange }: Props) => {
@@ -19,10 +19,10 @@ const CustomTextArea = ({ label, value, id, onChange }: Props) => {
                 required
                 rows={4}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => onChange(e)}
             />
         </>
-    )
-}
+    );
+};
 
-export default CustomTextArea
+export default CustomTextArea;
