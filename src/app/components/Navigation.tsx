@@ -1,7 +1,7 @@
 'use client';
 import React, { FC } from 'react';
 import Link from 'next/link';
-// import { HiHome } from 'react-icons/hi2'
+import { signOut } from '@/auth';
 import dynamic from 'next/dynamic';
 
 const HiHome = dynamic(() => import('react-icons/hi').then((mod) => mod.HiHome), {

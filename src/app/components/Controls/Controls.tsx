@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, SetStateAction, Dispatch } from 'react';
+import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 
 import NewMarker from '@/app/components/Controls/NewMarker/NewMarker';
