@@ -28,6 +28,10 @@ interface ContextValue {
     setNewMarkerIcon: React.Dispatch<React.SetStateAction<string>>;
     newMarkerColor: string;
     setNewMarkerColor: React.Dispatch<React.SetStateAction<string>>;
+    loadingDeleteMarker: boolean;
+    setLoadingDeleteMarker: React.Dispatch<React.SetStateAction<boolean>>;
+    loadingUpdateMarker: boolean;
+    setLoadingUpdateMarker: React.Dispatch<React.SetStateAction<boolean>>;
     handleAddMarker: (event: React.SyntheticEvent) => Promise<void>;
     handleRemoveImage: (imageId: string | ImageFile) => void;
     handleMarkerUpdate: (marker: TMarker, images: ImageFile[]) => void;
@@ -53,6 +57,10 @@ const initialValue: ContextValue = {
     handleRemoveImage: () => {},
     handleMarkerUpdate: () => {},
     handleRemoveMarker: () => {},
+    loadingDeleteMarker: false,
+    setLoadingDeleteMarker: () => {},
+    loadingUpdateMarker: false,
+    setLoadingUpdateMarker: () => {},
 };
 
 export const MarkersContext = createContext<ContextValue>(initialValue);
@@ -65,6 +73,8 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const [newMarkerImage, setNewMarkerImage] = useState<EditImages>({ old: [], new: [] });
     const [newMarkerIcon, setNewMarkerIcon] = useState<string>('fa-solid fa-location-dot');
     const [newMarkerColor, setNewMarkerColor] = useState<string>('black');
+    const [loadingDeleteMarker, setLoadingDeleteMarker] = useState<boolean>(false);
+    const [loadingUpdateMarker, setLoadingUpdateMarker] = useState<boolean>(false);
 
     const location = 'krasnoe-bedstvie';
 
@@ -77,6 +87,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }, []);
 
     const handleMarkerUpdate = async (marker: TMarker, editImage: ImageFile[]) => {
+        setLoadingUpdateMarker(true);
         const imageFiles = new FormData();
         editImage.forEach((img, index) => {
             imageFiles.append(`images[]`, img);
@@ -91,6 +102,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
             }
 
             toast.info(`Маркер ${marker.name} обновлен`);
+            setLoadingUpdateMarker(false);
             setMarkers((prev) => prev.map((prevMarker) => (prevMarker.id === marker.id ? res.data : prevMarker)));
         } catch (error) {
             console.log(`Возникла ошибка обновления маркера ${error}`);
@@ -113,7 +125,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         const markerFiles = new FormData();
 
-        newMarkerImage.new.forEach((img, index) => {
+        newMarkerImage.new.forEach((img) => {
             markerFiles.append(`images[]`, img);
         });
 
@@ -154,6 +166,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     const handleRemoveMarker = async (marker: TMarker) => {
+        setLoadingDeleteMarker(true);
         try {
             const response = JSON.parse(await removeMarker(marker.id, location, marker.images));
             if (!response.success) {
@@ -162,6 +175,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
             }
 
             toast.success(`Маркер ${marker.name} удален`);
+            setLoadingDeleteMarker(false);
             setMarkers((prev) => prev.filter((prevMarker) => prevMarker.id != marker.id));
         } catch (error) {
             console.log(error);
@@ -187,6 +201,10 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({ child
         handleRemoveImage,
         handleMarkerUpdate,
         handleRemoveMarker,
+        loadingDeleteMarker,
+        setLoadingDeleteMarker,
+        loadingUpdateMarker,
+        setLoadingUpdateMarker,
     };
 
     return <MarkersContext.Provider value={value}>{children}</MarkersContext.Provider>;

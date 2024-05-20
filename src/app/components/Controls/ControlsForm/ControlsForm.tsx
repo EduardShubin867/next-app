@@ -126,7 +126,11 @@ const ControlsForm = () => {
                 )}
                 disabled={isLoading}
             >
-                {isLoading ? <ButtonLoader /> : 'Добавить маркер'}
+                {isLoading ? (
+                    <ButtonLoader className="size-5 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600" />
+                ) : (
+                    'Добавить маркер'
+                )}
             </button>
         </form>
     );
