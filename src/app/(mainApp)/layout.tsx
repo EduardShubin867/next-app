@@ -10,7 +10,6 @@ type MainAppLayoutProps = {
 
 const MainAppLayout: FC<MainAppLayoutProps> = ({ children }) => {
     const authComp = auth();
-    console.log(authComp);
     return (
         <div className="relative">
             <Navigation />
