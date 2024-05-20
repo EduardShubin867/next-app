@@ -1,6 +1,7 @@
 'use client';
 import customMap from '@/assets/maps/fokas.webp';
 import Loader from '@/app/(mainApp)/krasnoe-bedstvie/loader';
+import { SessionProvider } from 'next-auth/react';
 
 import dynamic from 'next/dynamic';
 

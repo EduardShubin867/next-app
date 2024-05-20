@@ -5,10 +5,10 @@ import mongodb from '@/app/lib/mongodb';
 import axios from 'axios';
 import { writeFile } from 'fs/promises';
 import * as fs from 'node:fs/promises';
-import * as sfc from 'fs';
 import { nanoid } from 'nanoid';
 import path from 'path';
-import { headers } from 'next/headers';
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 export async function getMarkers() {
     const db = await mongodb();
@@ -140,4 +140,20 @@ async function uploadImageToImgur(image: File): Promise<string> {
 
     const response = await axios.post(endpoint, form, config);
     return response.data.data.link;
+}
+
+export async function authenticate(prevState: string | undefined, formData: FormData) {
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
 }
