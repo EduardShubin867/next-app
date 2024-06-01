@@ -15,6 +15,7 @@ import { MarkersContext } from '@/context/MarkersContext';
 import ImageDownload from '@/app/components/Controls/ImageDownload/ImageDownload';
 
 import { ImageFile } from '@/types/TMarker';
+import ButtonLoader from '../ButtonLoader/ButtonLoader';
 
 interface Props {
     marker: TMarker;
@@ -33,7 +34,8 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
     const [editDescription, setEditDescription] = useState(marker.description);
     const [editImage, setEditImage] = useState<EditImages>({ old: marker.images, new: [] });
 
-    const { handleMarkerUpdate, handleRemoveMarker } = useContext(MarkersContext);
+    const { handleMarkerUpdate, handleRemoveMarker, loadingUpdateMarker, loadingDeleteMarker } =
+        useContext(MarkersContext);
 
     const handleEditClick = (event: React.SyntheticEvent) => {
         event.stopPropagation();
@@ -114,7 +116,11 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
                 <div className="flex w-full justify-between">
                     {isEditing ? (
                         <CustomButton color="green" onClick={handleSaveClick}>
-                            <MdOutlineSave />
+                            {loadingUpdateMarker ? (
+                                <ButtonLoader className="size-5 animate-spin fill-cyan-700 text-cyan-700" />
+                            ) : (
+                                <MdOutlineSave />
+                            )}
                         </CustomButton>
                     ) : (
                         <CustomButton color="blue" onClick={handleEditClick}>
@@ -127,7 +133,11 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
                         </CustomButton>
                     )}
                     <CustomButton color="red" onClick={() => handleRemoveMarker(marker)}>
-                        <MdOutlineDeleteForever />
+                        {loadingDeleteMarker ? (
+                            <ButtonLoader className="size-5 animate-spin fill-red-700 text-red-700" />
+                        ) : (
+                            <MdOutlineDeleteForever />
+                        )}
                     </CustomButton>
                 </div>
             )}
