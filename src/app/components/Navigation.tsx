@@ -1,7 +1,6 @@
 'use client';
 import React, { FC } from 'react';
 import Link from 'next/link';
-import { signOut } from '@/auth';
 import dynamic from 'next/dynamic';
 
 const HiHome = dynamic(() => import('react-icons/hi').then((mod) => mod.HiHome), {
@@ -29,6 +28,7 @@ const Navigation: FC = () => {
                                 <HiHome className="transition duration-300 ease-in-out hover:scale-125" />
                             </Link>
                         </div>
+
                         <div className="ml-8 flex items-center space-x-4">
                             {navItems.map((item, index) => (
                                 <Link

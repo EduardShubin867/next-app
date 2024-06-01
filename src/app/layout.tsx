@@ -33,9 +33,7 @@ export default function RootLayout({
                 <Script src="https://kit.fontawesome.com/ebe06fd839.js"></Script>
             </head>
             <body>
-                {/* <AuthProvider> */}
                 <div className="mx-auto w-full">{children}</div>
-                {/* </AuthProvider> */}
             </body>
         </html>
     );

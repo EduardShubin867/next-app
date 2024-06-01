@@ -6,8 +6,6 @@ const LoginForm = () => {
     const [errorMessage, dispatch] = useFormState(authenticate, undefined);
     const { pending } = useFormStatus();
 
-    console.log(errorMessage);
-
     return (
         <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">
             <h2 className="mb-6 text-center text-2xl font-bold">Вход в систему</h2>
