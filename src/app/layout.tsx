@@ -24,6 +24,7 @@ export default function RootLayout({
         <html lang="en" className={roboto.className}>
             <head>
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+                <meta name="google-site-verification" content="ow909YezVnFdhUtR3e58fdKv98crgeKa5ayooP4tiFA" />
 
                 <link
                     rel="stylesheet"

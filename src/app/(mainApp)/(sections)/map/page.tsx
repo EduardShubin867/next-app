@@ -1,6 +1,6 @@
 'use client';
 import customMap from '@/assets/maps/fokas.webp';
-import Loader from '@/app/(mainApp)/krasnoe-bedstvie/loader';
+import Loader from '@/app/(mainApp)/(sections)/loader';
 
 import dynamic from 'next/dynamic';
 

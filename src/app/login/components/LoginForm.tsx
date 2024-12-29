@@ -1,9 +1,10 @@
+import { useActionState } from "react";
 'use client';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/lib/actions';
 
 const LoginForm = () => {
-    const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+    const [errorMessage, dispatch] = useActionState(authenticate, undefined);
     const { pending } = useFormStatus();
 
     return (

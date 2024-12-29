@@ -8,7 +8,7 @@ import * as fs from 'node:fs/promises';
 import { nanoid } from 'nanoid';
 import path from 'path';
 import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
+import AuthError from 'next-auth';
 
 export async function getMarkers() {
     const db = await mongodb();
