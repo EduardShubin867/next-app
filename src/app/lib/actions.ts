@@ -147,7 +147,7 @@ export async function authenticate(prevState: string | undefined, formData: Form
         await signIn('credentials', formData);
     } catch (error) {
         if (error instanceof AuthError) {
-            switch (error.type) {
+            switch (error) {
                 case 'CredentialsSignin':
                     return 'Invalid credentials.';
                 default:

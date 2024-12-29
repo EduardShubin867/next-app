@@ -24,7 +24,7 @@ export const { auth, signIn, signOut } = NextAuth({
                     const user = await db.collection('users').findOne({ username });
                     if (!user) return null;
 
-                    if (user && user.password === credentials.password) {
+                    if (user && user.password === credentials?.password) {
                         return {
                             id: user._id.toString(),
                             name: user.username,
@@ -51,7 +51,6 @@ export const { auth, signIn, signOut } = NextAuth({
         },
         async session({ session, token }) {
             if (token && typeof token.id === 'string') {
-                session.user.id = token.id;
                 session.user.name = token.name;
             }
             return session;

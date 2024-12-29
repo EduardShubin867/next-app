@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else if (session) {
             setAuthState({
                 isAuthenticated: true,
-                user: session.user as User,
+                user: session.user as unknown as User,
                 loading: false,
             });
             localStorage.setItem('auth', JSON.stringify(session));
