@@ -16,7 +16,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
-                  node-version: '20'
+                  node-version: '16'
 
             - name: Install dependencies
               run: npm install
@@ -24,14 +24,14 @@ jobs:
             - name: Build project
               run: npm run build
 
-            - name: Add SSH key
-              uses: webfactory/ssh-agent@v0.5.3
-              with:
-                  ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+            - name: Add server to known_hosts
+              run: |
+                  mkdir -p ~/.ssh
+                  ssh-keyscan -H 185.221.198.201 >> ~/.ssh/known_hosts
 
             - name: Deploy to server
               run: |
-                  ssh root@185.221.198.201 << 'EOF'
+                  ssh -tt root@185.221.198.201 << 'EOF'
                     cd /var/www/krasnoebedstvie
                     git pull origin master
                     npm install
