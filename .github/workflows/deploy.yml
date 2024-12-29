@@ -31,7 +31,7 @@ jobs:
 
             - name: Deploy to server
               run: |
-                  ssh user@server_ip << 'EOF'
+                  ssh root@185.221.198.201 << 'EOF'
                     cd /var/www/krasnoebedstvie
                     git pull origin master
                     npm install
