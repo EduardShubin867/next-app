@@ -1,11 +1,14 @@
 import { statSync } from 'fs';
 import fs from 'fs/promises';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 
-export async function GET(context: {
-  params: Promise<{ path: string[] }>;
-}): Promise<NextResponse> {
+export async function GET(
+  _req: NextRequest,
+  context: {
+    params: Promise<{ path: string[] }>;
+  }
+): Promise<NextResponse> {
   const { path: filePathArray } = await context.params;
 
   if (!filePathArray || filePathArray.length === 0) {
