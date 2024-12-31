@@ -29,11 +29,11 @@ export async function addMarker(newMarker: string, newMarkerFiles: FormData) {
     try {
       const fileName = nanoid();
       const fileExt = file.name.split('.').pop();
-      const filePath = `./public/assets/images/markerImages/${fileName}.${fileExt}`;
+      const filePath = `./uploads/images/markerImages/${fileName}.${fileExt}`;
       const buffer = new Uint8Array(await file.arrayBuffer());
       await writeFile(filePath, buffer);
       newMarkerObj.images.push(
-        `/assets/images/markerImages/${fileName}.${fileExt}`
+        `/uploads/images/markerImages/${fileName}.${fileExt}`
       );
     } catch (error) {
       console.log({
@@ -67,11 +67,11 @@ export async function updateMarker(marker: TMarker, imageFiles: FormData) {
 
   for (const file of newImages) {
     try {
-      const filePath = `./public/assets/images/markerImages/${nanoid()}.${file.name.split('.').pop()}`;
+      const filePath = `./uploads/images/markerImages/${nanoid()}.${file.name.split('.').pop()}`;
       const buffer = new Uint8Array(await file.arrayBuffer());
       await writeFile(filePath, buffer);
       marker.images.push(
-        `/assets/images/markerImages/${path.basename(filePath)}`
+        `/uploads/images/markerImages/${path.basename(filePath)}`
       );
     } catch (error) {
       console.log({
@@ -96,7 +96,7 @@ export async function removeMarker(id: string, images: string[]) {
   try {
     const promises = [
       db.collection(collectionName).deleteOne(query),
-      ...images.map((image) => fs.unlink(`./public${image}`)),
+      ...images.map((image) => fs.unlink(`${image}`)),
     ];
     await Promise.all(promises);
   } catch (error) {

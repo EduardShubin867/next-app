@@ -14,9 +14,9 @@ interface ImageCarouselProps {
 
 const handleImages = (image: ImageFile | string) => {
   if (typeof image === 'string') {
-    return image;
+    return `/api/uploads${image}`;
   } else {
-    return image.url;
+    return `/api/uploads${image.url}`;
   }
 };
 
