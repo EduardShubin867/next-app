@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import markersSlice from './features/markers/markersSlice';
+
 import markersReducer from './features/markers/markersSlice';
 
 export const makeStore = () => {

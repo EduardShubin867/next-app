@@ -1,9 +1,6 @@
-import * as React from 'react';
 import 'tailwindcss/tailwind.css';
 
-export interface INotFoundProps {}
-
-export default function NotFound(props: INotFoundProps) {
+export default function NotFound() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="rounded bg-white p-8 shadow-xl">
