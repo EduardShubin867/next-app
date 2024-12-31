@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { ToastContainer, Bounce } from 'react-toastify';
+import { Bounce, ToastContainer } from 'react-toastify';
 
 import Navigation from '@/app/components/Navigation';
 import 'react-toastify/dist/ReactToastify.css';

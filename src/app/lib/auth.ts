@@ -1,7 +1,7 @@
-import NextAuth, { NextAuthOptions, User } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { JWT } from 'next-auth/jwt';
 import { MongoClient } from 'mongodb';
+import NextAuth, { NextAuthOptions, Session, User } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import GoogleProvider from 'next-auth/providers/google';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: JWT }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
         session.user.role = token.role;
       }

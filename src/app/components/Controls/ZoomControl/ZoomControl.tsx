@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useState } from 'react';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import { FaMinus, FaPlus } from 'react-icons/fa';
 import { useMap } from 'react-leaflet';
 import { useMapEvent } from 'react-leaflet/hooks';
 

@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import L from 'leaflet';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
 
 import { MarkersContext } from '@/context/MarkersContext';

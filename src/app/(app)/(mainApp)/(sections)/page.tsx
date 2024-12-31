@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, FC } from 'react';
+import { FC, useEffect } from 'react';
 
 const KrasnoeBedstviePage: FC = () => {
   const router = useRouter();

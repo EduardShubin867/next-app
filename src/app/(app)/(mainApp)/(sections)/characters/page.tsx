@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Button } from 'flowbite-react';
+import { Button, Card } from 'flowbite-react';
 
 // Пример данных персонажей
 const characters = [

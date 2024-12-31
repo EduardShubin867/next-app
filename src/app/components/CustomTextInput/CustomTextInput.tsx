@@ -1,5 +1,5 @@
 'use client';
-import { Label, TextInput as FlowbiteTextInput } from 'flowbite-react';
+import { TextInput as FlowbiteTextInput, Label } from 'flowbite-react';
 
 interface Props {
   label: string;

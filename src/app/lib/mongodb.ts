@@ -1,5 +1,5 @@
-import { MongoClient } from 'mongodb';
 import * as mongoDB from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 const DB_NAME = 'krasnoebedstvie';

@@ -1,5 +1,5 @@
 'use client';
-import { useSession, signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useFormStatus } from 'react-dom';
 
 const LoginForm = () => {
@@ -13,8 +13,6 @@ const LoginForm = () => {
       window.open(signInUrl.url, 'GoogleSignIn', 'width=600,height=600');
     }
   };
-
-  console.log('🚀 ~ LoginForm ~ session:', session);
 
   return (
     <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-lg">

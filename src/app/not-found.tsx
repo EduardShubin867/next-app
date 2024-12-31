@@ -1,4 +1,3 @@
-import * as React from 'react';
 import 'tailwindcss/tailwind.css';
 
 export default function NotFound() {

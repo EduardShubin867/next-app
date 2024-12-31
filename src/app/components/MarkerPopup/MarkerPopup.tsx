@@ -1,17 +1,18 @@
 'use client';
 
 import clsx from 'clsx';
-import { useState, useContext, useCallback } from 'react';
-import { MdEdit } from 'react-icons/md';
-import { MdOutlineDeleteForever } from 'react-icons/md';
-import { MdOutlineSave } from 'react-icons/md';
-import { MdOutlineCancelPresentation } from 'react-icons/md';
+import { useCallback, useContext, useState } from 'react';
+import {
+  MdEdit,
+  MdOutlineCancelPresentation,
+  MdOutlineDeleteForever,
+  MdOutlineSave,
+} from 'react-icons/md';
 
 import ImageDownload from '@/app/components/Controls/ImageDownload/ImageDownload';
 import CustomButton from '@/app/components/CustomButton/CustomButton';
 import { MarkersContext } from '@/context/MarkersContext';
-import { TMarker } from '@/types/TMarker';
-import { ImageFile } from '@/types/TMarker';
+import { ImageFile, TMarker } from '@/types/TMarker';
 
 import ButtonLoader from '../ButtonLoader/ButtonLoader';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
@@ -98,7 +99,7 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
         contentEditable={isEditing}
         suppressContentEditableWarning={true}
         onInput={(e) => {
-          e.preventDefault;
+          e.preventDefault();
           setEditName(e.currentTarget.textContent as string);
         }}
       >
@@ -126,7 +127,7 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
         contentEditable={isEditing}
         suppressContentEditableWarning={true}
         onInput={(e) => {
-          e.preventDefault;
+          e.preventDefault();
           setEditDescription(e.currentTarget.textContent as string);
         }}
       >

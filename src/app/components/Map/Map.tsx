@@ -1,21 +1,21 @@
 'use client';
 
 import {
+  LatLngBounds,
   LatLngBoundsExpression,
   LatLngExpression,
-  LatLngBounds,
 } from 'leaflet';
 import { StaticImageData } from 'next/image';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect, useMemo, memo, useCallback } from 'react';
-import { MapContainer, ImageOverlay, useMap } from 'react-leaflet';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { ImageOverlay, MapContainer, useMap } from 'react-leaflet';
 
 import Controls from '@/app/components/Controls/Controls';
 import MarkersRender from '@/app/components/MarkersRender/MarkersRender';
 
 import 'leaflet/dist/leaflet.css';
-import './mapStyles.css';
 import { useSession } from 'next-auth/react';
+import './mapStyles.css';
 
 type MapProps = {
   customImage: StaticImageData;

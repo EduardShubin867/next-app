@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { MarkersContext } from '@/context/MarkersContext';
 import { useDebounce } from '@/hooks/useDebounce';

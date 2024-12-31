@@ -9,8 +9,7 @@ import {
   removeMarker,
   updateMarker,
 } from '@/app/lib/actions';
-import { ImageFile } from '@/types/TMarker';
-import { TMarker } from '@/types/TMarker';
+import { ImageFile, TMarker } from '@/types/TMarker';
 
 interface EditImages {
   old: string[];

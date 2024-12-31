@@ -3,7 +3,7 @@ import { Avatar, Dropdown } from 'flowbite-react';
 import { signOut, useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 const HiHome = dynamic(
   () => import('react-icons/hi').then((mod) => mod.HiHome),
@@ -58,7 +58,7 @@ const Navigation: FC = () => {
               <div className="ml-auto flex h-full justify-center align-middle">
                 <Dropdown
                   label={
-                    session.user.image ? (
+                    session?.user?.image ? (
                       <Avatar
                         className="h-full"
                         img={session.user.image}
@@ -74,9 +74,9 @@ const Navigation: FC = () => {
                   inline
                 >
                   <Dropdown.Header>
-                    <span className="block text-sm">{session.user.name}</span>
+                    <span className="block text-sm">{session?.user?.name}</span>
                     <span className="block truncate text-sm font-medium">
-                      {session.user.email}
+                      {session?.user?.email}
                     </span>
                   </Dropdown.Header>
                   <Dropdown.Divider />

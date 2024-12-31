@@ -1,6 +1,6 @@
 'use client';
 import L from 'leaflet';
-import { useContext, memo } from 'react';
+import { memo, useContext } from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import uuid from 'react-uuid';
 
@@ -18,7 +18,7 @@ interface MarkersRenderProp {
 
 const PureMarkerPopup = memo(MarkerPopup);
 
-const MarkersRender = ({ mapEdit, location }: MarkersRenderProp) => {
+const MarkersRender = ({ mapEdit }: MarkersRenderProp) => {
   const { markers } = useContext(MarkersContext);
 
   const markerIcon = (icon: string, color: string) => {

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { getMarkers } from '@/app/lib/actions';
 import { TMarker } from '@/types/TMarker';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const URL = 'http://localhost:3001';
 
@@ -18,31 +18,6 @@ export const fetchMarkers = createAsyncThunk(
     const response = await getMarkers();
 
     return response;
-  }
-);
-
-export const addNewMarker = createAsyncThunk(
-  'markers/addNewMarker',
-  async (newMarker: TMarker) => {
-    // const formData = new FormData();
-    // newMarker.images.forEach((img, index) => {
-    //     formData.append(`image[${index}]`, img, img.name);
-    // });
-    // // Add data to FormData
-    // formData.append('id', newMarker.id);
-    // formData.append('name', newMarker.name);
-    // formData.append('icon', newMarker.icon);
-    // formData.append('description', newMarker.description);
-    // formData.append('position', JSON.stringify(newMarker.position));
-    // formData.append('color', newMarker.color);
-    // formData.append('location', newMarker.location);
-    // try {
-    //     const response = await addMarker(newMarker);
-    //     return response;
-    // } catch (error) {
-    //     console.error('Error processing request:', error);
-    //     throw error;
-    // }
   }
 );
 
@@ -103,10 +78,10 @@ export const markersSlice = createSlice({
   extraReducers(builder) {
     builder
       // Get markers
-      .addCase(fetchMarkers.pending, (state, action) => {
+      .addCase(fetchMarkers.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchMarkers.fulfilled, (state, action) => {
+      .addCase(fetchMarkers.fulfilled, (state) => {
         state.status = 'succeeded';
 
         // state.markers = state.markers.concat(action.payload);
@@ -115,12 +90,8 @@ export const markersSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
       })
-      // Add marker
-      .addCase(addNewMarker.fulfilled, (state, action) => {
-        // state.markers.push(action.payload.newMarker);
-      })
       // Update marker
-      .addCase(updateMarker.pending, (state, action) => {
+      .addCase(updateMarker.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateMarker.fulfilled, (state, action) => {
@@ -134,7 +105,7 @@ export const markersSlice = createSlice({
         }
       })
       // Delete marker
-      .addCase(deleteMarker.pending, (state, action) => {
+      .addCase(deleteMarker.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(deleteMarker.fulfilled, (state, action) => {

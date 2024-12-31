@@ -1,33 +1,36 @@
 {
-    "printWidth": 80,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "bracketSpacing": true,
-    "jsxBracketSameLine": false,
-    "semi": true,
-    "useTabs": false,
-    "tabWidth": 2,
-    "htmlWhitespaceSensitivity": "css",
-    "proseWrap": "preserve",
-    "overrides": [
-        {
-            "files": "*.html",
-            "options": {
-                "parser": "html"
-            }
-        },
-        {
-            "files": "*.css",
-            "options": {
-                "parser": "css"
-            }
-        },
-        {
-            "files": "*.tsx",
-            "options": {
-                "parser": "typescript",
-                "plugins": ["prettier-plugin-tailwindcss"]
-            }
-        }
-    ]
+  "printWidth": 80,
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "htmlWhitespaceSensitivity": "css",
+  "proseWrap": "preserve",
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-organize-imports"
+  ],
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "html"
+      }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
+    },
+    {
+      "files": "*.tsx",
+      "options": {
+        "parser": "typescript"
+      }
+    }
+  ]
 }
