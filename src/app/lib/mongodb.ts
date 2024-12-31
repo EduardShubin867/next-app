@@ -7,17 +7,17 @@ const DB_NAME = 'interactive-map';
 let cachedDb: null | mongoDB.Db = null;
 
 export async function mongodb() {
-    if (cachedDb) {
-        return cachedDb;
-    }
+  if (cachedDb) {
+    return cachedDb;
+  }
 
-    const client: mongoDB.MongoClient = await MongoClient.connect(MONGODB_URI);
+  const client: mongoDB.MongoClient = await MongoClient.connect(MONGODB_URI);
 
-    const db: mongoDB.Db = await client.db(DB_NAME);
+  const db: mongoDB.Db = await client.db(DB_NAME);
 
-    cachedDb = db;
+  cachedDb = db;
 
-    return db;
+  return db;
 }
 
 export default mongodb;

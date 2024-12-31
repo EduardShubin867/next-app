@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation';
 import { useEffect, FC } from 'react';
 
 const KrasnoeBedstviePage: FC = () => {
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        router.push('/map');
-    }, [router]);
+  useEffect(() => {
+    router.push('/map');
+  }, [router]);
 
-    return null;
+  return null;
 };
 
 export default KrasnoeBedstviePage;
