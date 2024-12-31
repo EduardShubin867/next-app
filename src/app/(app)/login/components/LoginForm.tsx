@@ -1,11 +1,10 @@
 'use client';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useFormStatus } from 'react-dom';
 
 const LoginForm = () => {
   // const [errorMessage, dispatch] = useActionState(authenticate, undefined);
   const { pending } = useFormStatus();
-  const { data: session } = useSession();
 
   const handleGoogleSignIn = async () => {
     const signInUrl = await signIn('google', { redirect: false });
