@@ -32,7 +32,7 @@ const Map = ({ customImage }: MapProps) => {
 
   const isAdmin = session?.user?.role === 'admin' || false;
 
-  const [mapEdit, setMapEdit] = useState(true);
+  const [mapEdit, setMapEdit] = useState(isAdmin);
   const pathname = usePathname();
 
   const trimmedPathname = useMemo(() => {
