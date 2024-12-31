@@ -20,7 +20,8 @@ export default [
     'next/core-web-vitals',
     'plugin:tailwindcss/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'prettier' // Add this line
   ),
   {
     plugins: {
