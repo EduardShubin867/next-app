@@ -82,7 +82,7 @@ export async function updateMarker(marker: TMarker, imageFiles: FormData) {
   }
 
   try {
-    await db.collection(marker.location).updateOne(filter, update);
+    await db.collection(collectionName).updateOne(filter, update);
   } catch (error) {
     return JSON.stringify({ success: false, message: 'DB Error', error });
   }

@@ -56,7 +56,7 @@ const MarkerPopup = ({ marker, mapEdit }: Props) => {
 
   const handleSaveClick = async (event: React.SyntheticEvent) => {
     event.stopPropagation();
-    await handleMarkerUpdate(
+    handleMarkerUpdate(
       {
         ...marker,
         name: editName,
