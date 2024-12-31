@@ -12,10 +12,6 @@ interface MarkerState {
   error: string | undefined;
 }
 
-interface MyErrorType {
-  message: string;
-}
-
 export const fetchMarkers = createAsyncThunk(
   'markers/fetchMarkers',
   async () => {

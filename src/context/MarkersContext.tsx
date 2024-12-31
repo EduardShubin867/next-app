@@ -165,7 +165,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
       setNewMarkerDescription('');
       setNewMarkerImage({ old: [], new: [] });
       setNewMarkerIcon('fa-solid fa-location-dot');
-      setNewPosition([0, 0]);
+      setNewPosition([2.5, 7.2]);
     } catch (error) {
       console.log('Error on adding marker:', error);
     }
@@ -190,9 +190,7 @@ export const MarkersProvider: React.FC<{ children: React.ReactNode }> = ({
   const handleRemoveMarker = async (marker: TMarker) => {
     setLoadingDeleteMarker(true);
     try {
-      const response = JSON.parse(
-        await removeMarker(marker.id, location, marker.images)
-      );
+      const response = JSON.parse(await removeMarker(marker.id, marker.images));
       if (!response.success) {
         toast.error(`Ошбика удаления маркера: ${response.message}`);
         throw new Error(`Deleting marker error: ${response.message}`);

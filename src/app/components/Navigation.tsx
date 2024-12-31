@@ -25,6 +25,8 @@ const navItems: NavItem[] = [
 const Navigation: FC = () => {
   const { data: session } = useSession();
 
+  console.log(session);
+
   return (
     <nav className="fixed inset-x-0 top-0 z-[2000] h-[6vh] w-full bg-gray-200/75 shadow-xl backdrop-blur-sm">
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
@@ -79,7 +81,7 @@ const Navigation: FC = () => {
                   </Dropdown.Header>
                   <Dropdown.Divider />
                   <Dropdown.Item>
-                    <button onClick={() => signOut()}>Sign out</button>
+                    <p onClick={() => signOut()}>Sign out</p>
                   </Dropdown.Item>
                 </Dropdown>
               </div>

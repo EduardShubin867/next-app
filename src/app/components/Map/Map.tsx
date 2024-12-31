@@ -15,6 +15,7 @@ import MarkersRender from '@/app/components/MarkersRender/MarkersRender';
 
 import 'leaflet/dist/leaflet.css';
 import './mapStyles.css';
+import { useSession } from 'next-auth/react';
 
 type MapProps = {
   customImage: StaticImageData;
@@ -27,7 +28,9 @@ interface PanRestrictProps {
 const PureControls = memo(Controls);
 
 const Map = ({ customImage }: MapProps) => {
-  const isAdmin = true;
+  const { data: session } = useSession();
+
+  const isAdmin = session?.user?.role === 'admin' || false;
 
   const [mapEdit, setMapEdit] = useState(true);
   const pathname = usePathname();

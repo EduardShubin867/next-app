@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import * as mongoDB from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
-const DB_NAME = 'interactive-map';
+const DB_NAME = 'krasnoebedstvie';
 
 let cachedDb: null | mongoDB.Db = null;
 

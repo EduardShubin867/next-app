@@ -6,6 +6,14 @@ const LoginForm = () => {
   // const [errorMessage, dispatch] = useActionState(authenticate, undefined);
   const { pending } = useFormStatus();
   const { data: session } = useSession();
+
+  const handleGoogleSignIn = async () => {
+    const signInUrl = await signIn('google', { redirect: false });
+    if (signInUrl?.url) {
+      window.open(signInUrl.url, 'GoogleSignIn', 'width=600,height=600');
+    }
+  };
+
   console.log('🚀 ~ LoginForm ~ session:', session);
 
   return (
@@ -60,7 +68,13 @@ const LoginForm = () => {
         >
           Войти
         </button>
-        <button onClick={() => signIn('Google')}>Войти через Google</button>
+        <button
+          type="button"
+          className="w-full rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+          onClick={handleGoogleSignIn}
+        >
+          Войти через Google
+        </button>
       </form>
     </div>
   );
