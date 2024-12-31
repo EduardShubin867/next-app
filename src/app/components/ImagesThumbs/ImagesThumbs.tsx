@@ -19,7 +19,7 @@ const ImagesThumbs = ({ images, handleRemoveImage }: Props) => {
     if (typeof image === 'string') {
       return `/api/uploads${image}`;
     } else {
-      return `/api/uploads${image.url}`;
+      return image.url;
     }
   };
 
