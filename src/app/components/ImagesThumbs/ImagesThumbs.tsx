@@ -17,9 +17,9 @@ interface Props {
 const ImagesThumbs = ({ images, handleRemoveImage }: Props) => {
   const handleImageType = (image: ImageFile | string) => {
     if (typeof image === 'string') {
-      return image;
+      return `/api/uploads${image}`;
     } else {
-      return image.url;
+      return `/api/uploads${image.url}`;
     }
   };
 
